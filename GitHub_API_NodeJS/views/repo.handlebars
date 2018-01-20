@@ -3,7 +3,7 @@
     <h1>Repos for User: {{userName}}</h1>
     {{#each repoArray}}
         <div class="list-group">
-        <a href="#" class="list-group-item">
+        <a href="https://www.github.com/{{../userName}}/{{this.repoName}}" class="list-group-item"  target="_blank">
             <h4 class="list-group-item-heading">Name: {{this.repoName}}</h4>
             <p class="list-group-item-text"><b>Created At: </b>{{this.repoCreated}}</p>
             <p class="list-group-item-text"><b>Description: </b>{{this.repoDesc}}</p>

@@ -31,7 +31,7 @@ function getData(url, withAuth, callback) {
             return;
         }
         var jsonBody = JSON.parse(body);
-        console.log(jsonBody);
+        // console.log(jsonBody);
         callback(jsonBody);
     })
 }

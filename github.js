@@ -1,23 +1,7 @@
 var request = require('request');
 var githubHeaders = { 'User-Agent': 'request' };
 
-var getAllRepos = function(username, callback) {
-  request({ url: 'https://api.github.com/users/' + username + '/repos', headers: githubHeaders }, function(error, response, body) {
-    if(!response || response.statusCode != 200) {
-      callback(null);
-    }
-    var reposJson = JSON.parse(body);
-    var repos = [];
-    for(var i = 0; i < reposJson.length; i++) {
-      repos.push({
-        'name': reposJson[i].name,
-        'url': reposJson[i].url,
-        'clone_url': reposJson[i].clone_url
-      });
-    }
-    callback(repos);
-  });
-};
+
 
 getAllRepos('keller-mark', function(repos) {
   console.log(repos);
@@ -41,6 +25,7 @@ var walkSync = function(dir, filelist) {
   });
   return filelist;
 };
+    
 
 const { spawnSync } = require('child_process');
 var scoreRepo = function(repoDetails) {
@@ -48,7 +33,8 @@ var scoreRepo = function(repoDetails) {
   const clone = spawnSync('git', ['clone', repoDetails.clone_url, './cctmp']);
   // console.log(clone.status);
   var allFiles = walkSync('./cctmp');
-  // console.log(allFiles);
-  //const rmdir = spawnSync('rm', ['-r', './cctmp']);
+  console.log(allFiles);
+
+  const rmdir = spawnSync('rm', ['-r', './cctmp']);
   return 0;
 };
