@@ -1,5 +1,4 @@
 var request = require('request');
-
 var githubHeaders = { 'User-Agent': 'request' };
 
 var getAllRepos = function(username, callback) {
@@ -24,7 +23,7 @@ getAllRepos('keller-mark', function(repos) {
   console.log(repos);
   for(var i = 0; i < repos.length; i++) {
     var fileScore = scoreRepo(repos[i]);
-    console.log(fileScore);
+    // console.log(fileScore);
   }
 });
 
@@ -47,9 +46,9 @@ const { spawnSync } = require('child_process');
 var scoreRepo = function(repoDetails) {
   const mkdir = spawnSync('mkdir', ['./cctmp']);
   const clone = spawnSync('git', ['clone', repoDetails.clone_url, './cctmp']);
-  console.log(clone.status);
+  // console.log(clone.status);
   var allFiles = walkSync('./cctmp');
-  console.log(allFiles);
-  const rmdir = spawnSync('rm', ['-r', './cctmp']);
+  // console.log(allFiles);
+  //const rmdir = spawnSync('rm', ['-r', './cctmp']);
   return 0;
 };
