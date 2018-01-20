@@ -1,8 +1,5 @@
 const express = require('express');
 const app = express();
-// ******* MongoDB Requirements *******//
-// const mongoose = require('mongoose');
-// const MongoClient = require('mongodb').MongoClient;
 // ******* GitHub API Requirements *******//
 var request = require('request');
 var path = require('path');
@@ -31,7 +28,12 @@ var scoring = function(data){
 
 // Converts the text files to JSON objects and calculates a score
     // Calls scoring & called by checkPythonFormatting
-var textToJSONPython = function(fileName){
+var textToJSONPython = function(fileName, extension = '.py'){
+    var extensionObject = db.Extension.find();
+    var langObjectID = extensionObject.language_id;
+    var langObject = db.Language.find({ '_id': langObjectID });
+    console.log(langObject.name);
+
     var file1 = fileName + '1.txt';
     var file2 = fileName + '2.txt';
     // Read first file
@@ -42,7 +44,8 @@ var textToJSONPython = function(fileName){
     console.log(content2);
 
     // Convert to JSON
-    data = true; // Replace with JSON object
+    data = []; // Replace with JSON object
+    
 
     return scoring(data); // Send score
 }
