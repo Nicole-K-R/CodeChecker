@@ -20,6 +20,15 @@ var mv = require('mv');
 // ******* Variable(s) *******//
 var folder = 'uploads/';
 
+// Delete files in a specific folder
+var deleteAllFilesInFolder = function(folder){
+    fs.readdirSync(folder).forEach(function (file) {
+        console.log('Deleting: ' + file);
+        fs.unlinkSync(path.join(__dirname, 'python/' + file));
+    });
+}
+
+
 // Receives data as a JSON object (should be identical for each language)
     // Called by checkPythonFormatting
 var scoring = function(data){
@@ -50,32 +59,33 @@ var walkThroughFiles = function(dir, extension, filelist) {
     var files = fs.readdirSync(dir);
     filelist = filelist || [],
     extension = extension || '';
+    var allFilesList = []; //***************//
     files.forEach(function(file) {
         if (fs.statSync(path.join(dir, file)).isDirectory()) {
             filelist = walkThroughFiles(path.join(dir, file), extension, filelist);
         }
         else {
+            allFilesList.push(file);
             if (path.extname(file) === extension){
                 filelist.push(file);
             }
         }
     });
+    console.log(allFilesList);
     return filelist;
 };
 
 
 // Moves all python files from cctmp folder and moves them to python folder
-    // ****** Need to check folders too ******** //
     // Called by checkPythonFormatting
 var movePythonFiles = function (){
     var pythonFiles = walkThroughFiles('cctmp', '.py');
-    if (pythonFiles.length !== 0){
-        for (var i = 0; i < pythonFiles.length; i ++){
-            cmd.run('mkdir python \n cd cctmp \n mv ' + pythonFiles[i] + ' ../python');
-        }
-        return true;
-    } 
-    return false;
+    for (var i = 0; i < pythonFiles.length; i ++){
+        cmd.run('mkdir python \n cd cctmp \n mv ' + pythonFiles[i] + ' ../python');
+    }
+    cmd.run('cd ..');
+    console.log(pythonFiles);
+    deleteAllFilesInFolder('python');
 }
 
 // Check python formatting (checks pep8 on cctmp folder and checks for formatting errors in the .py files and
@@ -85,26 +95,21 @@ var checkPythonFormatting = function(repoDetails){
     // Make directory and clone files from the repo into it
     const mkdir = spawnSync('mkdir', ['./cctmp']);
     const clone = spawnSync('git', ['clone', repoDetails.clone_url, './cctmp']);
-    var hasPython = movePythonFiles();
+    movePythonFiles();
     // Delete files from cctmp folder
     const rmdir = spawnSync('rm', ['-r', './cctmp']);
     var repoName = repoDetails.name;
-    if (hasPython){
-        // Install pycodestyle and change directory to uploads folder
-        cmd.run('pip install pycodestyle');
-        cmd.run('cd python');
-            // Run pycodestyle on the python files and save it to <repoName>.txt 
-            // (first displays errors and solutions, second displays number of each errors)
-            // pycodestyle --show-source --show-pep8 <folder> > uploads/test.txt (1)
-            // pycodestyle --statistics -qq <folder> > uploads/test.txt (2)
-        cmd.run('pycodestyle --show-source --show-pep8 python > ./uploads/' + repoName + '1.txt');
-        cmd.run('pycodestyle --statistics -qq  python > ./uploads/' + repoName + '2.txt');
-        // Call function to turn error text files to json to send back to front-end
-        return textToJSONPython(repoName); // Send score
-    }
-    else{
-        return -1; // Return -1 if there are no python files in the repo
-    }
+    // Install pycodestyle and change directory to uploads folder
+    cmd.run('pip install pycodestyle');
+    cmd.run('cd python');
+        // Run pycodestyle on the python files and save it to <repoName>.txt 
+        // (first displays errors and solutions, second displays number of each errors)
+        // pycodestyle --show-source --show-pep8 <folder> > uploads/test.txt (1)
+        // pycodestyle --statistics -qq <folder> > uploads/test.txt (2)
+    cmd.run('pycodestyle --show-source --show-pep8 python > ./uploads/' + repoName + '1.txt');
+    cmd.run('pycodestyle --statistics -qq  python > ./uploads/' + repoName + '2.txt');
+    // Call function to turn error text files to json to send back to front-end
+    return textToJSONPython(repoName); // Send score
 }
 
 // Gets all GitHub repos under a given username
@@ -135,10 +140,15 @@ var getAllRepos = function(username, callback) {
 var getFiles = function(userName){
     var scorePy =[];
     getAllRepos(userName, function(repos) {
-        for(var i = 0; i < repos.length; i++) {
-            console.log('--------------------------------- ' + (i+1) + ' : ' + repos[i].name + ' ---------------------------------');
-            scorePy.push(repos[i].name, checkPythonFormatting(repos[i]));
-        }
+        console.log('--------------------------------- 0 : ' + repos[0].name + ' ---------------------------------');               
+        scorePy.push(repos[0].name, checkPythonFormatting(repos[0]));
+        console.log('--------------------------------- 5 : ' + repos[5].name + ' ---------------------------------'); 
+        scorePy.push(repos[5].name, checkPythonFormatting(repos[5]));
+        // for(var i = 0; i < repos.length; i++) {
+        //     console.log('--------------------------------- ' + (i+1) + ' : ' + repos[i].name + ' ---------------------------------');
+        //     scorePy.push(repos[i].name, checkPythonFormatting(repos[i]));
+        //     // deleteAllFilesInFolder('cctmp');
+        // }
     });
     //Calculate overall score and return
     var score = 0;
