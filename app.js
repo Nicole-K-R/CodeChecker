@@ -110,11 +110,14 @@ var checkPythonFormatting = function(repoDetails){
 // Gets all GitHub repos under a given username
     // Calls checkPythonFormatting and getAllRepos & called by express route
 var getAllRepos = function(username, callback) {
-    request({ url: 'https://api.github.com/users/' + username + '/repos', headers: githubHeaders }, function(error, response, body) {
+    //request({ url: 'https://api.github.com/users/' + username + '/repos', headers: githubHeaders }, function(error, response, body) {
+	//https://api.github.com/search/repositories?q=+user:daniel-e+language:python&sort=stars&order=desc	
+      request({ url: 'https://api.github.com/search/repositories?q=+user:' + username + '+language:python&sort=stars&order=desc', headers: githubHeaders }, function(error, response, body) {
+		  
       if(!response || response.statusCode != 200) {
         callback(null);
       }
-      var reposJson = JSON.parse(body);
+      var reposJson = JSON.parse(body).items;
       var repos = [];
       for(var i = 0; i < reposJson.length; i++) {
         repos.push({
