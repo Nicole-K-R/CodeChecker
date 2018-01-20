@@ -38,9 +38,9 @@ var deleteAllFilesInFolder = function(folder){
 var textToJSONPython = async function(fileName, extensionValue = '.py'){
     var textFiles = [];
     fs.readdirSync(folder).forEach(function (file) {
-        textFiles.push(file);
+        textFiles.push(path.join(folder, file));
     });
-    var scoreValue = score.scoreProfile(textFiles);
+    var scoreValue = await score.scoreProfile(textFiles);
     console.log(scoreValue);
 }
 
@@ -76,7 +76,7 @@ var movePythonFiles = function (){
 // Check python formatting (checks pep8 on cctmp folder and checks for formatting errors in the .py files and
 // stores errors in text files in the uploads directory)
     // Calls textToJSONPython & called by getFiles
-var checkPythonFormatting = function(repoDetails){
+var checkPythonFormatting = async function(repoDetails){
     // Make directory and clone files from the repo into it
     const mkdir = spawnSync('mkdir', ['./cctmp']);
     const clone = spawnSync('git', ['clone', repoDetails.clone_url, './cctmp']);
@@ -98,7 +98,8 @@ var checkPythonFormatting = function(repoDetails){
     // Delete python files
     deleteAllFilesInFolder('python');
     // Call function to turn error text files to json to send back to front-end
-    return textToJSONPython(repoName); // Send score
+    var result = await textToJSONPython(repoName); // Send score
+    return result;
 }
 
 // Gets all GitHub repos under a given username
@@ -126,24 +127,25 @@ var getAllRepos = function(username, callback) {
 
 // Gets repos from GitHub API
     // Calls checkPythonFormatting and getAllRepos & called by express route
-var getFiles = function(userName){
+var getFiles = async function(userName){
     var scorePy =[];
-    getAllRepos(userName, function(repos) {
+    getAllRepos(userName, async function(repos) {
         for(var i = 0; i < repos.length; i++) {
-            scorePy.push(repos[i].name, checkPythonFormatting(repos[i]));
+            var check = await checkPythonFormatting(repos[i]);
+            scorePy.push(repos[i].name, check);
         }
     });
     //Calculate overall score and return
     var score = 0;
     var obj = {};
     console.log('ScorePy: ' + scorePy);
-    for (var i = 0; i < scorePy.length; i ++){
+    /*for (var i = 0; i < scorePy.length; i++){
         score += scorePy[i][1];
         if (i !== 0){
             obj[scorePy[i][0]] = obj[scorePy[i][1]];
         }
     }
-    obj[scorePy[0][0]] = score;
+    obj[scorePy[0][0]] = score;*/
     return JSON.stringify(obj);
 }
 
