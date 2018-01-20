@@ -1,8 +1,5 @@
 const express = require('express');
 const app = express();
-// ******* MongoDB Requirements *******//
-// const mongoose = require('mongoose');
-// const MongoClient = require('mongodb').MongoClient;
 // ******* GitHub API Requirements *******//
 var request = require('request');
 var path = require('path');
@@ -39,7 +36,17 @@ var scoring = function(data){
 
 // Converts the text files to JSON objects and calculates a score
     // Calls scoring & called by checkPythonFormatting
-var textToJSONPython = function(fileName){
+var textToJSONPython = async function(fileName, extensionValue = '.py'){
+    // Retrieve language rules from database
+    var extensionObject = await db.Extension.findOne({ extension: extensionValue });
+    var langObjectID = extensionObject.language_id;
+    var langObject = await db.Language.findOne({ '_id': langObjectID });
+    var ruleObjects = await db.StyleRule.find({ 'language_id': langObjectID });
+
+    for(var i = 0; i < ruleObjects.length; i++) {
+      console.log(ruleObjects[i].name);
+    }
+
     var file1 = fileName + '1.txt';
     var file2 = fileName + '2.txt';
     // Read first file
@@ -50,7 +57,8 @@ var textToJSONPython = function(fileName){
     console.log(content2);
 
     // Convert to JSON
-    data = true; // Replace with JSON object
+    data = []; // Replace with JSON object
+    
 
     return scoring(data); // Send score
 }
@@ -174,7 +182,7 @@ app.get('/', function (req, res) {
   
 // POST method route (sendurl)
 //app.post('/sendurl', function (req, res) {
-app.get('/:userName', function (req, res) {
+app.get('/:userName', async function (req, res) {
     var userName = req.params.userName
     var url = 'https://github.com/' + userName;
     // Download files from github repos to uploads folder
