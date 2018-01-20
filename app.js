@@ -19,13 +19,6 @@ var folder = 'uploads/';
 // ******* Call score.js *******//
 var score = require('./score');
 
-// // Receives data as a JSON object (should be identical for each language)
-//     // Called by checkPythonFormatting
-// var scoring = function(data){
-//     // ***** Put in code for scoring ******
-//     return true; // Replace with score
-// }
-
 // Delete files in a specific folder
 var deleteAllFilesInFolder = function(){
     fs.readdirSync('python').forEach(function (file) {
@@ -37,11 +30,10 @@ var deleteAllFilesInFolder = function(){
     // Called by checkPythonFormatting
 var getScores = async function(repoName){
     var scoreRepo = 0;
-    scoreRepo = await score.scoreRepo(repoName + '2.txt');
+    scoreRepo = await score.scoreRepo(path.join(__dirname, `uploads/${repoName}2.txt`));
     console.log('Hello: ' + scoreRepo);
     return scoreRepo; // Number between -inifinity and 100
 }
-getScores('keller-mark');
 
 // Walks through files and directories and makes a list of all files with a certain extension
     // Called by movePythonFiles and itself
@@ -101,9 +93,6 @@ var checkPythonFormatting = async function(repoDetails){
     return scores; // Format number
 }
 
-// checkPythonFormatting();
-// console.log('* was called');
-
 // Gets all GitHub repos under a given username
     // Calls checkPythonFormatting and getAllRepos & called by express route
 var getAllRepos = async function(username, callback) {
@@ -132,6 +121,7 @@ var getAllRepos = async function(username, callback) {
 var getFiles = async function(userName){
     var scorePy =[];
     getAllRepos(userName, function(repos) {
+        console.log(repos);
         for(var i = 0; i < repos.length; i++) {
             scorePy.push([repos[i].name, checkPythonFormatting(repos[i])]);
         }
@@ -150,29 +140,28 @@ var getFiles = async function(userName){
     return JSON.stringify(obj);
 }
 
-getFiles('keller-mark');
 
-// // ------------------------------------------ Express Routing ------------------------------------------ //
-// // View engine setup
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'html');
+// ------------------------------------------ Express Routing ------------------------------------------ //
+// View engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'html');
 
-// // GET method route
-// app.get('/', function (req, res) {
-//     // res.send('Get root route');
-//     res.sendFile('views/index.html' , { root : __dirname});});
+// GET method route
+app.get('/', function (req, res) {
+    // res.send('Get root route');
+    res.sendFile('views/index.html' , { root : __dirname});});
   
-// // POST method route (sendurl)
-// //app.post('/sendurl', function (req, res) {
-// app.get('/:userName', async function (req, res) {
-//     var userName = req.params.userName
-//     var url = 'https://github.com/' + userName;
-//     // Download files from github repos to uploads folder
-//     res.send(getFiles(userName)); 
-// });
+// POST method route (sendurl)
+//app.post('/sendurl', function (req, res) {
+app.get('/:userName', async function (req, res) {
+    var userName = req.params.userName
+    var url = 'https://github.com/' + userName;
+    // Download files from github repos to uploads folder
+    res.send(getFiles(userName)); 
+});
 
-// app.use(express.static('public'));
+app.use(express.static('public'));
 
-// app.listen(7000, function(){
-//     console.log('Example app listening on port 7000!');
-// });
+app.listen(7000, function(){
+    console.log('Example app listening on port 7000!');
+});

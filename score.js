@@ -34,9 +34,12 @@ var scoreRepo = async function(filepath = './uploads/test2.txt', extensionValue 
     for(var i = 0; i < lines.length; i++) {
       score -= regexWeight(lines[i], ruleObjects);
     }
-    console.log(score);
+    console.log("Hello World: ", score);
+    return score;
 };
 exports.scoreRepo = scoreRepo;
+
+// scoreRepo();
 
 var scoreProfile = async function(all_filepaths, extensionValue = '.py') {
   var profileScore = 0;
