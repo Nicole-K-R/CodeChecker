@@ -11,12 +11,12 @@ Add database password to environment variables
 On mac:
 Run this in terminal OR add this to ```~/.bashrc```
 ```
-export PENNAPPS_MONGO_PASSWORD="code_checker"
+export PENNAPPS_MONGO_PASSWORD="password_here"
 ```
 
 On windows:
 ```
-setx PENNAPPS_MONGO_PASSWORD code_checker
+setx PENNAPPS_MONGO_PASSWORD password_here
 ```
 
 ## Running
