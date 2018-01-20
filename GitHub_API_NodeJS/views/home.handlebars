@@ -1,0 +1,40 @@
+{{> header}}
+
+<div class="container">
+    <h1>Welcome to the GitHub API Tutorial</h1>
+
+    <form action="/repo" method="post" class="home-form">
+        <p class="home-par">Leave empty to get your own data</p>
+        <input type="text" name="username" placeholder="username:mikaelm1">
+        <button>Fetch My Repos</button>
+    </form>
+
+    <form action="/repo/create" method="post" class="home-form">
+        <p class="home-par">Create new repository</p>
+        <input type="text" name="reponame" placeholder="name:awesomeproject">
+         <div class="form-group">
+            <p class="home-par">Enter Description</p>
+            <textarea class="form-control" rows="2" name="description"></textarea>
+        </div>
+        <button>Create Repo</button>
+    </form>
+
+    <form action="/repo/delete" method="post" class="home-form">
+        <p class="home-par">Enter your username and one of your repos</p>
+        <input type="text" name="username" placeholder="username">
+        <input type="text" name="reponame" placeholder="reponame">
+        <div style="margin-top: 12px">
+            <button>Delete My Repo</button>
+        </div>
+    </form>
+
+    <form action="/repo/webhook" method="post" class="home-form" style="margin-bottom: 80px">
+        <p class="home-par">Enter your username and one of your repos</p>
+        <input type="text" name="username" placeholder="username">
+        <input type="text" name="reponame" placeholder="reponame">
+        <div style="margin-top: 12px">
+            <button>Create Webhook</button>
+        </div>
+    </form>
+
+</div>

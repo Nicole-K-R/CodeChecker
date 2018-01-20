@@ -1,0 +1,26 @@
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="/home" class="navbar-brand">Unicorn</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            {{#if userToken}}
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">Logout</a></li>
+            </ul> 
+            {{else}}
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/login">Login</a></li>
+            </ul> 
+            {{/if}}
+        </div>
+    </div>
+
+    <div class="container">
+        {{#if message}}
+            <div class="alert alert-info" role="alert">
+                {{message}}
+            </div>
+        {{/if}}
+    </div>
+</nav>
