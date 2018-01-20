@@ -22,7 +22,6 @@ var folder = 'uploads/';
 // Delete files in a specific folder
 var deleteAllFilesInFolder = function(folder){
     fs.readdirSync(folder).forEach(function (file) {
-        console.log('Deleting: ' + file);
         fs.unlinkSync(path.join(__dirname, 'python/' + file));
     });
 }
@@ -52,10 +51,8 @@ var textToJSONPython = async function(fileName, extensionValue = '.py'){
     var file2 = fileName + '2.txt';
     // Read first file
     var content1 = read(file1);
-    console.log(content1);
     // Read second file
     var content2 = read(file2);
-    console.log(content2);
 
     // Convert to JSON
     data = []; // Replace with JSON object
@@ -89,8 +86,6 @@ var walkThroughFiles = function(dir, extension, filelist) {
     // Called by checkPythonFormatting
 var movePythonFiles = function (){
     var pythonFiles = walkThroughFiles('cctmp', '.py');
-    console.log('Lenght: ' + pythonFiles.length);
-    console.log('Files: ' + pythonFiles);
     for (var i = 0; i < pythonFiles.length; i ++){
         cmd.run('mkdir python \n cd cctmp \n mv ' + pythonFiles[i] + ' ../python');
     }
@@ -119,13 +114,10 @@ var checkPythonFormatting = function(repoDetails){
     cmd.run('pycodestyle --show-source --show-pep8 python > ./uploads/' + repoName + '1.txt');
     cmd.run('pycodestyle --statistics -qq  python > ./uploads/' + repoName + '2.txt');
     sleep.msleep(1500);
-    console.log('DELAY DONE');
     // Delete python files
-    // cmd.run('cd ..')
     deleteAllFilesInFolder('python');
     // Call function to turn error text files to json to send back to front-end
-    returnScore = textToJSONPython(repoName); // Send score
-    return returnScore;
+    return textToJSONPython(repoName); // Send score
 }
 
 // Gets all GitHub repos under a given username
@@ -156,22 +148,22 @@ var getAllRepos = function(username, callback) {
 var getFiles = function(userName){
     var scorePy =[];
     getAllRepos(userName, function(repos) {
-        // console.log('--------------------------------- 5 : ' + repos[4].name + ' ---------------------------------'); 
-        // scorePy.push(repos[4].name, checkPythonFormatting(repos[4]));
         for(var i = 0; i < repos.length; i++) {
-            console.log('--------------------------------- ' + (i+1) + ' : ' + repos[i].name + ' ---------------------------------');
             scorePy.push(repos[i].name, checkPythonFormatting(repos[i]));
         }
     });
     //Calculate overall score and return
     var score = 0;
+    var obj = {};
     console.log('ScorePy: ' + scorePy);
     for (var i = 0; i < scorePy.length; i ++){
-        if (score !== -1){
-            score += scorePy[i][1];
+        score += scorePy[i][1];
+        if (i !== 0){
+            obj[scorePy[i][0]] = obj[scorePy[i][1]];
         }
     }
-    return score;
+    obj[scorePy[0][0]] = score;
+    return JSON.stringify(obj);
 }
 
 // ------------------------------------------ Express Routing ------------------------------------------ //
@@ -191,8 +183,7 @@ app.get('/:userName', async function (req, res) {
     var userName = req.params.userName
     var url = 'https://github.com/' + userName;
     // Download files from github repos to uploads folder
-    getFiles(userName); 
-    res.sendFile('views/index.html' , { root : __dirname});
+    res.send(getFiles(userName)); 
 });
 
 app.use(express.static('public'));
