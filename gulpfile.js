@@ -11,20 +11,20 @@ gulp.task('vendor', function() {
       '!./node_modules/bootstrap/dist/css/bootstrap-grid*',
       '!./node_modules/bootstrap/dist/css/bootstrap-reboot*'
     ])
-    .pipe(gulp.dest('./vendor/bootstrap'))
+    .pipe(gulp.dest('./public/vendor/bootstrap'))
 
   // jQuery
   gulp.src([
       './node_modules/jquery/dist/*',
       '!./node_modules/jquery/dist/core.js'
     ])
-    .pipe(gulp.dest('./vendor/jquery'))
+    .pipe(gulp.dest('./public/vendor/jquery'))
 
   // jQuery Easing
   gulp.src([
       'node_modules/jquery.easing/*.js'
     ])
-    .pipe(gulp.dest('vendor/jquery-easing'))
+    .pipe(gulp.dest('public/vendor/jquery-easing'))
 
 })
 
@@ -42,7 +42,7 @@ gulp.task('browserSync', function() {
 
 // Dev task
 gulp.task('dev', ['browserSync'], function() {
-  gulp.watch('./css/*.css', browserSync.reload);
-  gulp.watch('./js/*.js', browserSync.reload);
-  gulp.watch('./*.html', browserSync.reload);
+  gulp.watch('./public/css/*.css', browserSync.reload);
+  gulp.watch('./public/js/*.js', browserSync.reload);
+  gulp.watch('./views/*.html', browserSync.reload);
 });
