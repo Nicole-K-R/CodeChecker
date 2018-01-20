@@ -16,8 +16,7 @@ var read = require('file-reader');
 // ******* Other Requirements *******//
 const assert = require('assert');
 const fs = require('fs');
-var isDirectory = require('is-directory');
-var glob = require('glob');
+var mv = require('mv');
 // ******* Variable(s) *******//
 var folder = 'uploads/';
 
@@ -47,26 +46,38 @@ var textToJSONPython = function(fileName){
     return scoring(data); // Send score
 }
 
+var walkThroughFiles = function(dir, extension, filelist) {
+    var files = fs.readdirSync(dir);
+    filelist = filelist || [],
+    extension = extension || '';
+    files.forEach(function(file) {
+        if (fs.statSync(path.join(dir, file)).isDirectory()) {
+            filelist = walkThroughFiles(path.join(dir, file), extension, filelist);
+        }
+        else {
+            if (path.extname(file) === extension){
+                filelist.push(file);
+            }
+        }
+    });
+    return filelist;
+};
+
+
 // Moves all python files from cctmp folder and moves them to python folder
     // ****** Need to check folders too ******** //
     // Called by checkPythonFormatting
 var movePythonFiles = function (){
-    var isPython = false;
-    var directories = [];
-    var pythonFiles = [];
-    var numDirectories = 0;
-    var first = true;
-    
-
-    // Check if it is a folder or a file (****** Not working, need to go through the files and go into directories to check all files)*****
-    
-    
-    console.log('Python files: ' + pythonFiles);
-    console.log('# Python files: ' + pythonFiles.length);
-    console.log('directories: ' + directories);
-    console.log('# directories: ' + directories.length);
-    console.log('isPython: ' + isPython);  
-    return isPython;
+    var pythonFiles = walkThroughFiles('cctmp', '.py');
+    if (pythonFiles.length !== 0){
+        console.log(__dirname);
+        for (var i = 0; i < pythonFiles.length; i ++){
+            cmd.run('mv ' + pythonFiles[i] + ' uploads/');
+            // cmd.run('mv ' + pythonFiles[i] + ' ../uploads/');
+        }
+        return true;
+    } 
+    return false;
 }
 
 // Check python formatting (checks pep8 on cctmp folder and checks for formatting errors in the .py files and
