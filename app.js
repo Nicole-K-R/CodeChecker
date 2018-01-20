@@ -27,11 +27,15 @@ var scoring = function(data){
 
 // Converts the text files to JSON objects and calculates a score
     // Calls scoring & called by checkPythonFormatting
-var textToJSONPython = function(fileName, extension = '.py'){
-    var extensionObject = db.Extension.find();
+var textToJSONPython = async function(fileName, extensionValue = '.py'){
+    var extensionObject = await db.Extension.findOne({ extension: extensionValue });
     var langObjectID = extensionObject.language_id;
-    var langObject = db.Language.find({ '_id': langObjectID });
-    console.log(langObject.name);
+    var langObject = await db.Language.findOne({ '_id': langObjectID });
+    var ruleObjects = await db.StyleRule.find({ 'language_id': langObjectID });
+
+    for(var i = 0; i < ruleObjects.length; i++) {
+      console.log(ruleObjects[i].name);
+    }
 
     var file1 = fileName + '1.txt';
     var file2 = fileName + '2.txt';
@@ -166,7 +170,7 @@ app.get('/', function (req, res) {
   
 // POST method route (sendurl)
 //app.post('/sendurl', function (req, res) {
-app.get('/:userName', function (req, res) {
+app.get('/:userName', async function (req, res) {
     var userName = req.params.userName
     var url = 'https://github.com/' + userName;
     // Download files from github repos to uploads folder
