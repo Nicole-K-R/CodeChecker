@@ -7,7 +7,15 @@ Input your github profile link to get a code style score
 npm install
 pip install -r requirements.txt
 ```
-## Running
+Add database password to environment variables
+On mac:
+add this to ```~/.bashrc```
+```
+export PENNAPPS_MONGO_PASSWORD="code_checker"
+```
+
+
+# #Running
 ```
 node app.js
 ```

@@ -28,6 +28,7 @@ var scoring = function(data){
 // Converts the text files to JSON objects and calculates a score
     // Calls scoring & called by checkPythonFormatting
 var textToJSONPython = async function(fileName, extensionValue = '.py'){
+    // Retrieve language rules from database
     var extensionObject = await db.Extension.findOne({ extension: extensionValue });
     var langObjectID = extensionObject.language_id;
     var langObject = await db.Language.findOne({ '_id': langObjectID });
