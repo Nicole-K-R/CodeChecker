@@ -3,7 +3,6 @@ const app = express();
 // ******* GitHub API Requirements *******//
 var request = require('request');
 var path = require('path');
-var db = require('./db');
 var githubHeaders = { 'User-Agent': 'request' };
 const { spawnSync } = require('child_process');
 // ******* Command Line Requirement *******//
@@ -17,7 +16,15 @@ var mv = require('mv');
 var sleep = require('sleep');
 // ******* Variable(s) *******//
 var folder = 'uploads/';
+// ******* Call score.js *******//
+var score = require('./score');
 
+// // Receives data as a JSON object (should be identical for each language)
+//     // Called by checkPythonFormatting
+// var scoring = function(data){
+//     // ***** Put in code for scoring ******
+//     return true; // Replace with score
+// }
 
 // Delete files in a specific folder
 var deleteAllFilesInFolder = function(folder){
@@ -26,40 +33,15 @@ var deleteAllFilesInFolder = function(folder){
     });
 }
 
-// Receives data as a JSON object (should be identical for each language)
-    // Called by checkPythonFormatting
-var scoring = function(data){
-    // ***** Put in code for scoring ******
-
-    return true; // Replace with score
-}
-
 // Converts the text files to JSON objects and calculates a score
-    // Calls scoring & called by checkPythonFormatting
+    // Called by checkPythonFormatting
 var textToJSONPython = async function(fileName, extensionValue = '.py'){
-    // Retrieve language rules from database
-    var extensionObject = await db.Extension.findOne({ extension: extensionValue });
-    var langObjectID = extensionObject.language_id;
-    var langObject = await db.Language.findOne({ '_id': langObjectID });
-    var ruleObjects = await db.StyleRule.find({ 'language_id': langObjectID });
-
-    for(var i = 0; i < ruleObjects.length; i++) {
-      console.log(ruleObjects[i].name);
-    }
-
-    var file1 = fileName + '1.txt';
-    var file2 = fileName + '2.txt';
-    // Read first file
-    var content1 = read(file1);
-    // Read second file
-    var content2 = read(file2);
-
-    // Convert to JSON
-    data = []; // Replace with JSON object
-    
-
-    // return scoring(data); // Send score
-    return 0;
+    var textFiles = [];
+    fs.readdirSync(folder).forEach(function (file) {
+        textFiles.push(file);
+    });
+    var scoreValue = score.scoreProfile(textFiles);
+    console.log(scoreValue);
 }
 
 var walkThroughFiles = function(dir, extension, filelist) {
@@ -89,7 +71,6 @@ var movePythonFiles = function (){
     for (var i = 0; i < pythonFiles.length; i ++){
         cmd.run('mkdir python \n cd cctmp \n mv ' + pythonFiles[i] + ' ../python');
     }
-    console.log(pythonFiles);
 }
 
 // Check python formatting (checks pep8 on cctmp folder and checks for formatting errors in the .py files and
@@ -174,7 +155,6 @@ app.set('view engine', 'html');
 // GET method route
 app.get('/', function (req, res) {
     // res.send('Get root route');
-    console.log('/');
     res.sendFile('views/index.html' , { root : __dirname});});
   
 // POST method route (sendurl)
