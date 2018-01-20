@@ -36,7 +36,7 @@ var scoreRepo = async function(filepath = './uploads/test2.txt', extensionValue 
     }
     console.log(score);
 };
-//scoreRepo();
+exports.scoreRepo = scoreRepo;
 
 var scoreProfile = async function(all_filepaths, extensionValue = '.py') {
   var profileScore = 0;
@@ -50,4 +50,5 @@ var scoreProfile = async function(all_filepaths, extensionValue = '.py') {
   profileScore = profileScore / numRepos;
   return profileScore;
 }
+exports.scoreProfile = scoreProfile;
 
