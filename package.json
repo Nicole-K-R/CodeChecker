@@ -21,7 +21,6 @@
     "file-reader": "^1.1.1",
     "jquery": "^3.3.0",
     "mongoose": "^5.0.0",
-    "mysql": "^2.15.0",
     "node-cmd": "^3.0.0",
     "request": "^2.83.0"
   },
