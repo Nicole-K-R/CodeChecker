@@ -1,4 +1,6 @@
 var request = require('request');
+var path = require('path');
+var db = require('./db');
 
 var githubHeaders = { 'User-Agent': 'request' };
 
@@ -42,6 +44,7 @@ var walkSync = function(dir, filelist) {
   });
   return filelist;
 };
+    
 
 const { spawnSync } = require('child_process');
 var scoreRepo = function(repoDetails) {
@@ -50,6 +53,7 @@ var scoreRepo = function(repoDetails) {
   console.log(clone.status);
   var allFiles = walkSync('./cctmp');
   console.log(allFiles);
+
   const rmdir = spawnSync('rm', ['-r', './cctmp']);
   return 0;
 };
