@@ -151,6 +151,8 @@ app.get('/:userName', function (req, res) {
     res.sendFile('views/index.html' , { root : __dirname});
 });
 
+app.use(express.static('public'));
+
 app.listen(7000, function(){
     console.log('Example app listening on port 7000!');
 });
