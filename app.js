@@ -70,10 +70,8 @@ var walkThroughFiles = function(dir, extension, filelist) {
 var movePythonFiles = function (){
     var pythonFiles = walkThroughFiles('cctmp', '.py');
     if (pythonFiles.length !== 0){
-        console.log(__dirname);
         for (var i = 0; i < pythonFiles.length; i ++){
             cmd.run('mkdir python \n cd cctmp \n mv ' + pythonFiles[i] + ' ../python');
-            console.log(pythonFiles[i]);
         }
         return true;
     } 
