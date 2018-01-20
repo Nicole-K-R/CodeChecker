@@ -125,6 +125,7 @@ var getAllRepos = async function(username) {
 // Gets repos from GitHub API
     // Calls checkPythonFormatting and getAllRepos & called by express route
 var getFiles = async function(userName) {
+    console.log('User Name: ', userName);
     var scorePy = [];
     let body = await getAllRepos(userName);
     var reposJson = JSON.parse(body).items;
