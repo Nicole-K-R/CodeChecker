@@ -42,6 +42,7 @@ var textToJSONPython = async function(fileName, extensionValue = '.py'){
     });
     var scoreValue = await score.scoreProfile(textFiles);
     console.log(scoreValue);
+    return scoreValue;
 }
 
 var walkThroughFiles = function(dir, extension, filelist) {
@@ -128,11 +129,11 @@ var getAllRepos = function(username, callback) {
 // Gets repos from GitHub API
     // Calls checkPythonFormatting and getAllRepos & called by express route
 var getFiles = async function(userName){
-    var scorePy =[];
+    var scorePy = [];
     getAllRepos(userName, async function(repos) {
         for(var i = 0; i < repos.length; i++) {
             var check = await checkPythonFormatting(repos[i]);
-            scorePy.push(repos[i].name, check);
+            scorePy.push([repos[i].name, check]);
         }
     });
     //Calculate overall score and return
@@ -145,7 +146,7 @@ var getFiles = async function(userName){
             obj[scorePy[i][0]] = obj[scorePy[i][1]];
         }
     }
-    obj[scorePy[0][0]] = score;*/
+    obj[scorePy[0][0]] = score;*/ 
     return JSON.stringify(obj);
 }
 
