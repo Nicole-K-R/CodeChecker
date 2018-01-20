@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const mysql = require('mysql');
+const mongoose = require('mongoose');
 
 // GET method route
 app.get('/', function (req, res) {
