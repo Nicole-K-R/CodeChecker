@@ -9,13 +9,17 @@ pip install -r requirements.txt
 ```
 Add database password to environment variables
 On mac:
-add this to ```~/.bashrc```
+Run this in terminal OR add this to ```~/.bashrc```
 ```
 export PENNAPPS_MONGO_PASSWORD="code_checker"
 ```
 
+On windows:
+```
+setx PENNAPPS_MONGO_PASSWORD code_checker
+```
 
-# #Running
+## Running
 ```
 node app.js
 ```
