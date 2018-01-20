@@ -1,0 +1,35 @@
+1       E101 indentation contains mixed spaces and tabs
+167     E111 indentation is not a multiple of four
+26      E114 indentation is not a multiple of four (comment)
+1       E115 expected an indented block (comment)
+1       E127 continuation line over-indented for visual indent
+2       E128 continuation line under-indented for visual indent
+6       E201 whitespace after '('
+1       E202 whitespace before ')'
+1       E203 whitespace before ','
+1       E224 tab after operator
+61      E225 missing whitespace around operator
+1       E227 missing whitespace around bitwise or shift operator
+3       E228 missing whitespace around modulo operator
+86      E231 missing whitespace after ','
+18      E261 at least two spaces before inline comment
+23      E262 inline comment should start with '# '
+30      E265 block comment should start with '# '
+1       E266 too many leading '#' for block comment
+1       E272 multiple spaces before keyword
+21      E302 expected 2 blank lines, found 1
+8       E303 too many blank lines (2)
+2       E305 expected 2 blank lines after class or function definition, found 1
+1       E306 expected 1 blank line before a nested definition, found 0
+2       E401 multiple imports on one line
+1       E402 module level import not at top of file
+41      E501 line too long (109 > 79 characters)
+1       E502 the backslash is redundant between brackets
+17      E701 multiple statements on one line (colon)
+2       E713 test for membership should be 'not in'
+1       E741 ambiguous variable name 'l'
+161     W191 indentation contains tabs
+22      W291 trailing whitespace
+8       W293 blank line contains whitespace
+2       W391 blank line at end of file
+1       W601 .has_key() is deprecated, use 'in'

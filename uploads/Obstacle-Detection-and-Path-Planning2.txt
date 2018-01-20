@@ -1,0 +1,23 @@
+1       E101 indentation contains mixed spaces and tabs
+1       E115 expected an indented block (comment)
+1       E127 continuation line over-indented for visual indent
+1       E128 continuation line under-indented for visual indent
+1       E224 tab after operator
+18      E225 missing whitespace around operator
+1       E227 missing whitespace around bitwise or shift operator
+49      E231 missing whitespace after ','
+2       E261 at least two spaces before inline comment
+18      E262 inline comment should start with '# '
+30      E265 block comment should start with '# '
+1       E272 multiple spaces before keyword
+7       E302 expected 2 blank lines, found 1
+6       E303 too many blank lines (2)
+2       E401 multiple imports on one line
+14      E501 line too long (80 > 79 characters)
+1       E502 the backslash is redundant between brackets
+1       E741 ambiguous variable name 'l'
+161     W191 indentation contains tabs
+21      W291 trailing whitespace
+8       W293 blank line contains whitespace
+2       W391 blank line at end of file
+1       W601 .has_key() is deprecated, use 'in'
