@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const assert = require('assert');
+
 const mongoPassword = process.env.PENNAPPS_MONGO_PASSWORD;
 mongoose.connect('mongodb://PennApps18:' + mongoPassword + '@code-checker-shard-00-00-ala2x.mongodb.net:27017,code-checker-shard-00-01-ala2x.mongodb.net:27017,code-checker-shard-00-02-ala2x.mongodb.net:27017/codechecker?ssl=true&replicaSet=code-checker-shard-0&authSource=admin');
 
@@ -30,7 +32,7 @@ var dbInit = function() {
   pythonLang.save(onError);
 
   var whitespaceAfterCurlyBraceRule = new StyleRule({
-    name: 'Whitespace after curly brace',
+    name: 'whitespace after curly brace',
     language_id: pythonLang,
     regex_match: 'whitespace after \\\'\\{\\\'',
     weight: 1
@@ -44,8 +46,17 @@ var dbTest = function() {
   query.select('name checker_command');
   query.exec(function(err, lang) {
     onError(err);
-    console.log(lang.checker_command);
+    assert.equal('pycodestyle --first <filename>', lang.checker_command);
   });
+
+  query = StyleRule.findOne();
+
+  query.select('name language_id regex_match weight');
+  query.exec(function(err, rule) {
+    onError(err);
+    assert.equal(1, rule.weight);
+  });
+
 };
 dbTest();
 
