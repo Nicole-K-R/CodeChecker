@@ -33,6 +33,13 @@ var deleteAllFilesInFolder = function(folder){
     });
 }
 
+// Delete files in a specific folder (uploads)
+var deleteAllFilesInUploads = function(folder = 'uploads/'){
+    fs.readdirSync(folder).forEach(function (file) {
+        fs.unlinkSync(path.join(__dirname, `/uploads/${file}`));
+    });
+}
+
 // Converts the text files to JSON objects and calculates a score
     // Called by checkPythonFormatting
 var textToJSONPython = async function(fileName, extensionValue = '.py'){
@@ -41,8 +48,6 @@ var textToJSONPython = async function(fileName, extensionValue = '.py'){
         textFiles.push(path.join(folder, file));
     });
     var scoreValue = await score.scoreProfile(textFiles);
-    console.log(fileName);
-    console.log(scoreValue);
     return scoreValue;
 }
 
@@ -50,13 +55,11 @@ var walkThroughFiles = function(dir, extension, filelist) {
     var files = fs.readdirSync(dir);
     filelist = filelist || [],
     extension = extension || '';
-    var allFilesList = []; //***************//
     files.forEach(function(file) {
         if (fs.statSync(path.join(dir, file)).isDirectory()) {
             filelist = walkThroughFiles(path.join(dir, file), extension, filelist);
         }
         else {
-            allFilesList.push(file);
             if (path.extname(file) === extension){
                 filelist.push(file);
             }
@@ -140,7 +143,7 @@ var getFiles = async function(userName) {
 
     for(var i = 0; i < repos.length; i++) {
         var check = await checkPythonFormatting(repos[i]);
-        console.log(check);
+        // console.log(check);
         scorePy.push([repos[i].name, check]);
     }
 
@@ -150,12 +153,15 @@ var getFiles = async function(userName) {
     for (var i = 0; i < scorePy.length; i++){
         score += scorePy[i][1];
         if (i !== 0){
-            obj[scorePy[i][0]] = obj[scorePy[i][1]];
+            console.log(scorePy[i][1]);
+            obj[scorePy[i][0]] = scorePy[i][1];
+            console.log(obj[scorePy[i][0]]);
         }
     }
-    obj[scorePy[0][0]] = score;
-
-    return JSON.stringify(obj);
+    obj[scorePy[0][0]] = score/(scorePy.length);
+    console.log(obj[scorePy[0][0]])
+    var variable = JSON.stringify(obj);
+    return variable;
 };
 
 // ------------------------------------------ Express Routing ------------------------------------------ //
@@ -171,6 +177,8 @@ app.get('/', function (req, res) {
 // POST method route (sendurl)
 //app.post('/sendurl', function (req, res) {
 app.get('/:userName', async function (req, res) {
+    // Delete files in uploads folder
+    deleteAllFilesInUploads();
     var userName = req.params.userName
     var url = 'https://github.com/' + userName;
     // Download files from github repos to uploads folder
