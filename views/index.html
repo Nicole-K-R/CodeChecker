@@ -68,7 +68,10 @@ $(function(){
     
     var username = $('#ghusername').val();
     var requri   = 'https://api.github.com/users/'+username;
-    var repouri  = 'https://api.github.com/users/'+username+'/repos';
+    //var repouri  = 'https://api.github.com/users/'+username+'/repos';
+	
+	// Hard-coded "language:python" to restrict the repos to only those containing .py files, sorted in desc order by stars.
+	var repouri  = 'https://api.github.com/search/repositories?q=+user:' + username + '+language:python&sort=stars&order=desc';
     
     requestJSON(requri, function(json) {
       if(json.message == "Not Found" || username == '') {
@@ -95,14 +98,14 @@ $(function(){
         
         var repositories;
         $.getJSON(repouri, function(json){
-          repositories = json;   
+          repositories = json.items;   
           outputPageContent();                
         });          
         
         function outputPageContent() {
           if(repositories.length == 0) { outhtml = outhtml + '<p>No repos!</p></div>'; }
           else {
-            outhtml = outhtml + '<p><strong>Repos List:</strong></p> <ul>';
+            outhtml = outhtml + '<p><strong>Python Repos List:</strong></p> <ul>';
             $.each(repositories, function(index) {
               outhtml = outhtml + '<li><a href="'+repositories[index].html_url+'" target="_blank">'+repositories[index].name + '</a></li>';
             });
