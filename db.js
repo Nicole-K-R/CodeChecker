@@ -18,6 +18,7 @@ var styleRuleSchema = new Schema({
   name: String,
   language_id: {type: Schema.Types.ObjectId, ref: 'Language'},
   regex_match: String,
+  regex_match_count: String,
   weight: Number
 });
 var StyleRule = mongoose.model('StyleRule', styleRuleSchema);
