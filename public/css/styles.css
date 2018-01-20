@@ -183,6 +183,18 @@ a:hover {
   margin-bottom: 15px;
 }
 
+.btn {
+  text-align: center;
+}
+
+.score-btn{
+  width: 200px;
+}
+
+.form-btn{
+
+}
+
 #ghsubmitbtn {
   display: inline-block;
   padding: 8px 18px;

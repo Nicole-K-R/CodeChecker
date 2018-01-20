@@ -53,11 +53,25 @@
       <div id="w">
     <h1>Welcome to the Code Checker Tool</h1>
     <p>Enter a single Github username below and click the button to score the profile.</p>
+    <div class="row">
+      <input type="text" name="ghusername" id="ghusername" placeholder="Github username...">
+    </div>
     
-    <input type="text" name="ghusername" id="ghusername" placeholder="Github username...">
-    
-    <a href="#" id="ghsubmitbtn">Score!</a>
-    
+    <div class="row">
+      <a class="btn score-btn" href="#" id="ghsubmitbtn">Score!</a>
+      <form class="btn form-btn" action="#">
+        <select name="cars">
+          <option value="Python">Python</option>
+          <option value="Fortran">Fortran</option>
+          <option value="Java">Java</option>
+          <option value="C++">C++</option>
+          <option value="PHP">Node.js</option>
+          <option value="PHP">JavaScript</option>
+          <option value="PHP">PHP</option>
+        </select>
+      </form>
+      
+    </div>
     <div id="ghapidata" class="clearfix"></div>
   </div>
 <script type="text/javascript">
