@@ -20,7 +20,7 @@ var regexWeight = function(line, ruleObjects) {
   return 0; //no matching regex found, 0 weight
 }
 
-var scoreRepo = async function(filepath = './uploads/test2.txt', extensionValue = '.py') {
+var scoreRepo = async function(filepath, extensionValue = '.py') {
     // Retrieve language rules from database
     var extensionObject = await db.Extension.findOne({ extension: extensionValue });
     var langObjectID = extensionObject.language_id;
@@ -34,7 +34,7 @@ var scoreRepo = async function(filepath = './uploads/test2.txt', extensionValue 
     for(var i = 0; i < lines.length; i++) {
       score -= regexWeight(lines[i], ruleObjects);
     }
-    console.log(score);
+    return score;
 };
 exports.scoreRepo = scoreRepo;
 
@@ -47,7 +47,11 @@ var scoreProfile = async function(all_filepaths, extensionValue = '.py') {
     numRepos++;
   }
   // average all repos together to compute profileScore
-  profileScore = profileScore / numRepos;
+  if(numRepos == 0) {
+    return 0;
+  } else {
+    profileScore = profileScore / numRepos;
+  }
   return profileScore;
 }
 exports.scoreProfile = scoreProfile;
