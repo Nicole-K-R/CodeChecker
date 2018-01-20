@@ -14,8 +14,10 @@ var read = require('file-reader');
 const assert = require('assert');
 const fs = require('fs');
 var mv = require('mv');
+var sleep = require('sleep');
 // ******* Variable(s) *******//
 var folder = 'uploads/';
+
 
 // Delete files in a specific folder
 var deleteAllFilesInFolder = function(folder){
@@ -24,7 +26,6 @@ var deleteAllFilesInFolder = function(folder){
         fs.unlinkSync(path.join(__dirname, 'python/' + file));
     });
 }
-
 
 // Receives data as a JSON object (should be identical for each language)
     // Called by checkPythonFormatting
@@ -60,7 +61,8 @@ var textToJSONPython = async function(fileName, extensionValue = '.py'){
     data = []; // Replace with JSON object
     
 
-    return scoring(data); // Send score
+    // return scoring(data); // Send score
+    return 0;
 }
 
 var walkThroughFiles = function(dir, extension, filelist) {
@@ -79,7 +81,6 @@ var walkThroughFiles = function(dir, extension, filelist) {
             }
         }
     });
-    console.log(allFilesList);
     return filelist;
 };
 
@@ -88,12 +89,12 @@ var walkThroughFiles = function(dir, extension, filelist) {
     // Called by checkPythonFormatting
 var movePythonFiles = function (){
     var pythonFiles = walkThroughFiles('cctmp', '.py');
+    console.log('Lenght: ' + pythonFiles.length);
+    console.log('Files: ' + pythonFiles);
     for (var i = 0; i < pythonFiles.length; i ++){
         cmd.run('mkdir python \n cd cctmp \n mv ' + pythonFiles[i] + ' ../python');
     }
-    cmd.run('cd ..');
     console.log(pythonFiles);
-    deleteAllFilesInFolder('python');
 }
 
 // Check python formatting (checks pep8 on cctmp folder and checks for formatting errors in the .py files and
@@ -103,6 +104,7 @@ var checkPythonFormatting = function(repoDetails){
     // Make directory and clone files from the repo into it
     const mkdir = spawnSync('mkdir', ['./cctmp']);
     const clone = spawnSync('git', ['clone', repoDetails.clone_url, './cctmp']);
+    var returnScore = -1;
     movePythonFiles();
     // Delete files from cctmp folder
     const rmdir = spawnSync('rm', ['-r', './cctmp']);
@@ -116,8 +118,14 @@ var checkPythonFormatting = function(repoDetails){
         // pycodestyle --statistics -qq <folder> > uploads/test.txt (2)
     cmd.run('pycodestyle --show-source --show-pep8 python > ./uploads/' + repoName + '1.txt');
     cmd.run('pycodestyle --statistics -qq  python > ./uploads/' + repoName + '2.txt');
+    sleep.msleep(1500);
+    console.log('DELAY DONE');
+    // Delete python files
+    // cmd.run('cd ..')
+    deleteAllFilesInFolder('python');
     // Call function to turn error text files to json to send back to front-end
-    return textToJSONPython(repoName); // Send score
+    returnScore = textToJSONPython(repoName); // Send score
+    return returnScore;
 }
 
 // Gets all GitHub repos under a given username
@@ -148,15 +156,12 @@ var getAllRepos = function(username, callback) {
 var getFiles = function(userName){
     var scorePy =[];
     getAllRepos(userName, function(repos) {
-        console.log('--------------------------------- 0 : ' + repos[0].name + ' ---------------------------------');               
-        scorePy.push(repos[0].name, checkPythonFormatting(repos[0]));
-        console.log('--------------------------------- 5 : ' + repos[5].name + ' ---------------------------------'); 
-        scorePy.push(repos[5].name, checkPythonFormatting(repos[5]));
-        // for(var i = 0; i < repos.length; i++) {
-        //     console.log('--------------------------------- ' + (i+1) + ' : ' + repos[i].name + ' ---------------------------------');
-        //     scorePy.push(repos[i].name, checkPythonFormatting(repos[i]));
-        //     // deleteAllFilesInFolder('cctmp');
-        // }
+        // console.log('--------------------------------- 5 : ' + repos[4].name + ' ---------------------------------'); 
+        // scorePy.push(repos[4].name, checkPythonFormatting(repos[4]));
+        for(var i = 0; i < repos.length; i++) {
+            console.log('--------------------------------- ' + (i+1) + ' : ' + repos[i].name + ' ---------------------------------');
+            scorePy.push(repos[i].name, checkPythonFormatting(repos[i]));
+        }
     });
     //Calculate overall score and return
     var score = 0;
