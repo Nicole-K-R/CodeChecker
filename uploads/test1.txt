@@ -1,0 +1,820 @@
+python/test.py:4:1: E302 expected 2 blank lines, found 1
+class WP():
+^
+    Separate top-level function and class definitions with two blank lines.
+
+    Method definitions inside a class are separated by a single blank line.
+
+    Extra blank lines may be used (sparingly) to separate groups of related
+    functions.  Blank lines may be omitted between a bunch of related
+    one-liners (e.g. a set of dummy implementations).
+
+    Use blank lines in functions, sparingly, to indicate logical sections.
+
+    Okay: def a():\n    pass\n\n\ndef b():\n    pass
+    Okay: def a():\n    pass\n\n\nasync def b():\n    pass
+    Okay: def a():\n    pass\n\n\n# Foo\n# Bar\n\ndef b():\n    pass
+    Okay: default = 1\nfoo = 1
+    Okay: classify = 1\nfoo = 1
+
+    E301: class Foo:\n    b = 0\n    def bar():\n        pass
+    E302: def a():\n    pass\n\ndef b(n):\n    pass
+    E302: def a():\n    pass\n\nasync def b(n):\n    pass
+    E303: def a():\n    pass\n\n\n\ndef b(n):\n    pass
+    E303: def a():\n\n\n\n    pass
+    E304: @decorator\n\ndef a():\n    pass
+    E305: def a():\n    pass\na()
+    E306: def a():\n    def b():\n        pass\n    def c():\n        pass
+python/test.py:5:3: E111 indentation is not a multiple of four
+  api_base = 'http://wp.assemblique.markk.co/wp/wp-json/wp/v2/'
+  ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:7:3: E111 indentation is not a multiple of four
+  def get_posts(self, page_num, per_page, category=None):
+  ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:8:80: E501 line too long (91 > 79 characters)
+    posts_url = WP.api_base + 'posts/?per_page=' + str(per_page) + '&page=' + str(page_num)
+                                                                               ^
+    Limit all lines to a maximum of 79 characters.
+
+    There are still many devices around that are limited to 80 character
+    lines; plus, limiting windows to 80 characters makes it possible to have
+    several windows side-by-side.  The default wrapping on such devices looks
+    ugly.  Therefore, please limit all lines to a maximum of 79 characters.
+    For flowing long blocks of text (docstrings or comments), limiting the
+    length to 72 characters is recommended.
+
+    Reports error E501.
+python/test.py:10:7: E111 indentation is not a multiple of four
+      posts_url += '&categories=' + str(category.value)
+      ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:15:7: E111 indentation is not a multiple of four
+      try:
+      ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:17:7: E111 indentation is not a multiple of four
+      except:
+      ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:17:7: E722 do not use bare except'
+      except:
+      ^
+    When catching exceptions, mention specific exceptions whenever possible.
+
+    Okay: except Exception:
+    Okay: except BaseException:
+    E722: except:
+python/test.py:19:7: E111 indentation is not a multiple of four
+      page_posts = r.json()
+      ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:20:7: E111 indentation is not a multiple of four
+      for index, post in enumerate(page_posts):
+      ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:21:80: E501 line too long (92 > 79 characters)
+        page_posts[index]['media_src_url'] = self.get_featured_media(post['featured_media'])
+                                                                               ^
+    Limit all lines to a maximum of 79 characters.
+
+    There are still many devices around that are limited to 80 character
+    lines; plus, limiting windows to 80 characters makes it possible to have
+    several windows side-by-side.  The default wrapping on such devices looks
+    ugly.  Therefore, please limit all lines to a maximum of 79 characters.
+    For flowing long blocks of text (docstrings or comments), limiting the
+    length to 72 characters is recommended.
+
+    Reports error E501.
+python/test.py:24:3: E111 indentation is not a multiple of four
+  def get_post(self, post_id, category=None):
+  ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:29:7: E111 indentation is not a multiple of four
+      post = r.json()
+      ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:30:7: E111 indentation is not a multiple of four
+      if category and len(post['categories']) > 0:
+      ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:32:11: E111 indentation is not a multiple of four
+          return None
+          ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:33:7: E111 indentation is not a multiple of four
+      post['media_src_url'] = self.get_featured_media(post['featured_media'])
+      ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:36:3: E111 indentation is not a multiple of four
+  def get_featured_media(self, media_id):
+  ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:39:7: E111 indentation is not a multiple of four
+      media_url = WP.api_base + 'media/' + str(media_id)
+      ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:40:7: E111 indentation is not a multiple of four
+      media_r = requests.get(media_url)
+      ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:41:7: E111 indentation is not a multiple of four
+      if media_r.status_code == requests.codes.OK:
+      ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:46:3: E111 indentation is not a multiple of four
+  def get_assemblique_category(self, wp_categories):
+  ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:48:7: E111 indentation is not a multiple of four
+      if wp_category.value in wp_categories:
+      ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:52:3: E111 indentation is not a multiple of four
+  def get_assemblique_url(self, assemblique_category, post_id):
+  ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:54:7: E111 indentation is not a multiple of four
+      page_name = assemblique_category.name.lower()
+      ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:55:7: E111 indentation is not a multiple of four
+      page_name = page_name.replace('_', '-')
+      ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:56:7: E111 indentation is not a multiple of four
+      if (page_name == "past-events") or (page_name == "upcoming-events"):
+      ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:58:7: E111 indentation is not a multiple of four
+      return '/' + page_name + '/' + str(post_id)
+      ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:61:3: E111 indentation is not a multiple of four
+  def search(self, query, page_num):
+  ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:67:7: E111 indentation is not a multiple of four
+      search_results = r.json()
+      ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:68:7: E111 indentation is not a multiple of four
+      for result in search_results:
+      ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:72:11: E111 indentation is not a multiple of four
+          post = post_request.json()
+          ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:73:11: E111 indentation is not a multiple of four
+          assemblique_url = self.get_assemblique_url(self.get_assemblique_category(post['categories']), post['id'])
+          ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:73:80: E501 line too long (115 > 79 characters)
+          assemblique_url = self.get_assemblique_url(self.get_assemblique_category(post['categories']), post['id'])
+                                                                               ^
+    Limit all lines to a maximum of 79 characters.
+
+    There are still many devices around that are limited to 80 character
+    lines; plus, limiting windows to 80 characters makes it possible to have
+    several windows side-by-side.  The default wrapping on such devices looks
+    ugly.  Therefore, please limit all lines to a maximum of 79 characters.
+    For flowing long blocks of text (docstrings or comments), limiting the
+    length to 72 characters is recommended.
+
+    Reports error E501.
+python/test.py:74:11: E111 indentation is not a multiple of four
+          if assemblique_url is not None:
+          ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:76:80: E501 line too long (83 > 79 characters)
+            post['media_src_url'] = self.get_featured_media(post['featured_media'])
+                                                                               ^
+    Limit all lines to a maximum of 79 characters.
+
+    There are still many devices around that are limited to 80 character
+    lines; plus, limiting windows to 80 characters makes it possible to have
+    several windows side-by-side.  The default wrapping on such devices looks
+    ugly.  Therefore, please limit all lines to a maximum of 79 characters.
+    For flowing long blocks of text (docstrings or comments), limiting the
+    length to 72 characters is recommended.
+
+    Reports error E501.
+python/test.py:78:7: E111 indentation is not a multiple of four
+      next_page = requests.get(search_url + '/' + str(page_num + 1))
+      ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:79:7: E111 indentation is not a multiple of four
+      if next_page.status_code == requests.codes.OK and len(next_page.json()) > 0:
+      ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:79:80: E501 line too long (82 > 79 characters)
+      if next_page.status_code == requests.codes.OK and len(next_page.json()) > 0:
+                                                                               ^
+    Limit all lines to a maximum of 79 characters.
+
+    There are still many devices around that are limited to 80 character
+    lines; plus, limiting windows to 80 characters makes it possible to have
+    several windows side-by-side.  The default wrapping on such devices looks
+    ugly.  Therefore, please limit all lines to a maximum of 79 characters.
+    For flowing long blocks of text (docstrings or comments), limiting the
+    length to 72 characters is recommended.
+
+    Reports error E501.
+python/test.py:85:3: E111 indentation is not a multiple of four
+  PORTFOLIO = 187
+  ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:86:3: E111 indentation is not a multiple of four
+  COMMISSIONS = 188
+  ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:87:3: E111 indentation is not a multiple of four
+  UPCOMING_EVENTS = 189
+  ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:88:3: E111 indentation is not a multiple of four
+  PRESS = 190
+  ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
+python/test.py:89:3: E111 indentation is not a multiple of four
+  PAST_EVENTS = 191
+  ^
+    Use 4 spaces per indentation level.
+
+    For really old code that you don't want to mess up, you can continue to
+    use 8-space tabs.
+
+    Okay: a = 1
+    Okay: if a == 0:\n    a = 1
+    E111:   a = 1
+    E114:   # a = 1
+
+    Okay: for item in items:\n    pass
+    E112: for item in items:\npass
+    E115: for item in items:\n# Hi\n    pass
+
+    Okay: a = 1\nb = 2
+    E113: a = 1\n    b = 2
+    E116: a = 1\n    # b = 2
