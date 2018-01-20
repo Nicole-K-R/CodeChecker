@@ -41,6 +41,7 @@ var textToJSONPython = async function(fileName, extensionValue = '.py'){
         textFiles.push(path.join(folder, file));
     });
     var scoreValue = await score.scoreProfile(textFiles);
+    console.log(fileName);
     console.log(scoreValue);
     return scoreValue;
 }
@@ -78,6 +79,8 @@ var movePythonFiles = function (){
 // stores errors in text files in the uploads directory)
     // Calls textToJSONPython & called by getFiles
 var checkPythonFormatting = async function(repoDetails){
+    // Delete python files
+    deleteAllFilesInFolder('python');
     // Make directory and clone files from the repo into it
     const mkdir = spawnSync('mkdir', ['./cctmp']);
     const clone = spawnSync('git', ['clone', repoDetails.clone_url, './cctmp']);
@@ -96,8 +99,7 @@ var checkPythonFormatting = async function(repoDetails){
     cmd.run('pycodestyle --show-source --show-pep8 python > ./uploads/' + repoName + '1.txt');
     cmd.run('pycodestyle --statistics -qq  python > ./uploads/' + repoName + '2.txt');
     sleep.msleep(1500);
-    // Delete python files
-    deleteAllFilesInFolder('python');
+    
     // Call function to turn error text files to json to send back to front-end
     var result = await textToJSONPython(repoName); // Send score
     return result;
@@ -105,50 +107,55 @@ var checkPythonFormatting = async function(repoDetails){
 
 // Gets all GitHub repos under a given username
     // Calls checkPythonFormatting and getAllRepos & called by express route
-var getAllRepos = function(username, callback) {
+var getAllRepos = async function(username) {
     //request({ url: 'https://api.github.com/users/' + username + '/repos', headers: githubHeaders }, function(error, response, body) {
 	//https://api.github.com/search/repositories?q=+user:daniel-e+language:python&sort=stars&order=desc	
-      request({ url: 'https://api.github.com/search/repositories?q=+user:' + username + '+language:python&sort=stars&order=desc', headers: githubHeaders }, function(error, response, body) {
-		  
-      if(!response || response.statusCode != 200) {
-        callback(null);
-      }
-      var reposJson = JSON.parse(body).items;
-      var repos = [];
-      for(var i = 0; i < reposJson.length; i++) {
-        repos.push({
-          'name': reposJson[i].name,
-          'url': reposJson[i].url,
-          'clone_url': reposJson[i].clone_url
+      return new Promise(function (resolve, reject) {
+          request({ url: 'https://api.github.com/search/repositories?q=+user:' + username + '+language:python&sort=stars&order=desc', headers: githubHeaders }, function(error, response, body) {
+            if (!error && response.statusCode == 200) {
+                resolve(body);
+            } else {
+                reject(error);
+            }
         });
-      }
-      callback(repos);
     });
-  };
+};
+    
 
 // Gets repos from GitHub API
     // Calls checkPythonFormatting and getAllRepos & called by express route
-var getFiles = async function(userName){
+var getFiles = async function(userName) {
     var scorePy = [];
-    getAllRepos(userName, async function(repos) {
-        for(var i = 0; i < repos.length; i++) {
-            var check = await checkPythonFormatting(repos[i]);
-            scorePy.push([repos[i].name, check]);
-        }
-    });
-    //Calculate overall score and return
+    let body = await getAllRepos(userName);
+    var reposJson = JSON.parse(body).items;
+    var repos = [];
+    for(var i = 0; i < reposJson.length; i++) {
+      repos.push({
+        'name': reposJson[i].name,
+        'url': reposJson[i].url,
+        'clone_url': reposJson[i].clone_url
+      });
+    }
+
+    for(var i = 0; i < repos.length; i++) {
+        var check = await checkPythonFormatting(repos[i]);
+        console.log(check);
+        scorePy.push([repos[i].name, check]);
+    }
+
     var score = 0;
     var obj = {};
-    console.log('ScorePy: ' + scorePy);
-    /*for (var i = 0; i < scorePy.length; i++){
+    console.log('ScorePy length: ' + scorePy.length);
+    for (var i = 0; i < scorePy.length; i++){
         score += scorePy[i][1];
         if (i !== 0){
             obj[scorePy[i][0]] = obj[scorePy[i][1]];
         }
     }
-    obj[scorePy[0][0]] = score;*/ 
+    obj[scorePy[0][0]] = score;
+
     return JSON.stringify(obj);
-}
+};
 
 // ------------------------------------------ Express Routing ------------------------------------------ //
 // View engine setup
