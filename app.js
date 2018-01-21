@@ -126,10 +126,24 @@ var getTopMessages = function(repoScoreDetails) {
     allMessages.sort(function(a, b) {
         return b[0] - a[0];
     });
-    if(allMessages.length >= 3) {
-        return allMessages.slice(0, 3);
+    var mainSuggestions = [];
+    for(var i = 0; i < allMessages.length; i++) {
+        var message = allMessages[i];
+        var inMain = false;
+        for(var j = 0; j < mainSuggestions.length; j++) {
+            if(mainSuggestions[j][2] === message[2]) {
+                inMain = true;
+            }
+        }
+        if(!inMain) {
+            mainSuggestions.push(message);
+        }
+    }
+        
+    if(mainSuggestions.length >= 3) {
+        return mainSuggestions.slice(0, 3);
     } else {
-        return allMessages; //returns array of 'tuple'-type arrays [ [22, "message"], ...]
+        return mainSuggestions; //returns array of 'tuple'-type arrays [ [22, "message"], ...]
     }
 };
 
