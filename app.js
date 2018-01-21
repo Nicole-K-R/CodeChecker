@@ -142,7 +142,10 @@ var getFiles = async function(userName) {
     }
 
     for(var i = 0; i < repos.length; i++) {
+        // Number((6.688689).toFixed(0)); // 7
         var check = await checkPythonFormatting(repos[i]);
+        console.log(check);
+        check = Number((check).toFixed(0));
         // console.log(check);
         scorePy.push([repos[i].name, check]);
     }
@@ -152,15 +155,12 @@ var getFiles = async function(userName) {
     console.log('ScorePy length: ' + scorePy.length);
     for (var i = 0; i < scorePy.length; i++){
         score += scorePy[i][1];
-        if (i !== 0){
-            console.log(scorePy[i][1]);
-            obj[scorePy[i][0]] = scorePy[i][1];
-            console.log(obj[scorePy[i][0]]);
-        }
+        obj[scorePy[i][0]] = scorePy[i][1];
     }
-    obj[scorePy[0][0]] = score/(scorePy.length);
-    console.log(obj[scorePy[0][0]])
+    scorePy[0][(scorePy.length - 1)] = 'Average';
+    obj[scorePy[0][(scorePy.length - 1)]] = Number((score/(scorePy.length)).toFixed(0));
     var variable = JSON.stringify(obj);
+    console.log(variable);
     return variable;
 };
 
