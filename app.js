@@ -19,12 +19,6 @@ var folder = 'uploads/';
 // ******* Call score.js *******//
 var score = require('./score');
 
-// // Receives data as a JSON object (should be identical for each language)
-//     // Called by checkPythonFormatting
-// var scoring = function(data){
-//     // ***** Put in code for scoring ******
-//     return true; // Replace with score
-// }
 
 // Delete files in a specific folder
 var deleteAllFilesInFolder = function(folder){
@@ -35,9 +29,13 @@ var deleteAllFilesInFolder = function(folder){
 
 // Delete files in a specific folder (uploads)
 var deleteAllFilesInUploads = function(folder = 'uploads/'){
-    fs.readdirSync(folder).forEach(function (file) {
-        fs.unlinkSync(path.join(__dirname, `/uploads/${file}`));
-    });
+    if(fs.existsSync(folder)) {
+        fs.readdirSync(folder).forEach(function (file) {
+            fs.unlinkSync(path.join(__dirname, `/uploads/${file}`));
+        });
+    } else {
+        fs.mkdirSync(folder);
+    }
 }
 
 // Converts the text files to JSON objects and calculates a score
