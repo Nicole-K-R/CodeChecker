@@ -57,7 +57,7 @@ var scoreRepo = async function(filepath, extensionValue = '.py') {
     return score;
 };
 exports.scoreRepo = scoreRepo;
-/*
+
 var scoreProfile = async function(all_filepaths, extensionValue = '.py') {
   var profileScore = 0;
   var numRepos = 0;
@@ -76,4 +76,3 @@ var scoreProfile = async function(all_filepaths, extensionValue = '.py') {
 }
 exports.scoreProfile = scoreProfile;
 
-*/
