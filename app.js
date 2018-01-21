@@ -128,7 +128,6 @@ var getAllRepos = async function(username) {
 // Gets repos from GitHub API
     // Calls checkPythonFormatting and getAllRepos & called by express route
 var getFiles = async function(userName) {
-    console.log('User Name: ', userName);
     var scorePy = [];
     let body = await getAllRepos(userName);
     var reposJson = JSON.parse(body).items;
@@ -144,24 +143,26 @@ var getFiles = async function(userName) {
     for(var i = 0; i < repos.length; i++) {
         // Number((6.688689).toFixed(0)); // 7
         var check = await checkPythonFormatting(repos[i]);
-        console.log(check);
         check = Number((check).toFixed(0));
-        // console.log(check);
         scorePy.push([repos[i].name, check]);
     }
 
     var score = 0;
     var obj = {};
-    console.log('ScorePy length: ' + scorePy.length);
     for (var i = 0; i < scorePy.length; i++){
         score += scorePy[i][1];
         obj[scorePy[i][0]] = scorePy[i][1];
     }
     scorePy[0][(scorePy.length - 1)] = 'Average';
     obj[scorePy[0][(scorePy.length - 1)]] = Number((score/(scorePy.length)).toFixed(0));
-    var variable = JSON.stringify(obj);
-    console.log(variable);
-    return variable;
+    // var variable = JSON.stringify(obj);
+    // console.log(variable);
+    // var num = 1;
+    // console.log(typeof num);
+    // console.log(typeof obj);
+    // console.log(typeof variable);
+    // return variable;
+    return obj;
 };
 
 // ------------------------------------------ Express Routing ------------------------------------------ //
@@ -176,13 +177,17 @@ app.get('/', function (req, res) {
   
 // POST method route (sendurl)
 //app.post('/sendurl', function (req, res) {
-app.get('/:userName', async function (req, res) {
+app.post('/:userName', async function (req, res) {
     // Delete files in uploads folder
     deleteAllFilesInUploads();
     var userName = req.params.userName
     var url = 'https://github.com/' + userName;
     // Download files from github repos to uploads folder
-    res.send(getFiles(userName)); 
+    var variable = await getFiles(userName);
+    var sendVal = JSON.stringify(variable);
+    console.log(sendVal);
+    // var sendVal = getFiles(userName)
+    res.send(sendVal); 
 });
 
 app.use(express.static('public'));
