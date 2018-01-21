@@ -31,17 +31,18 @@ var getCategoryName = function(line, categoryObjects) {
 };
 
 var getMostFrequentLines = function(all_lines) {
+  var messageFrequency = []; // map number to message
+  var regex = new RegExp('(\\d*)\\s+[A-Z]\\d*\\s+(.*)');
+  
   for(var i = 0; i < all_lines.length; i++) {
     var line = all_lines[i];
-    var regex = new RegExp('(\\d*).*[A-Z]\\d*(.*)');
     var matches = regex.exec(line);
-    var messageFrequency = []; // map number to message
-    if(matches != null && matches.length == 2) {
-      messageFrequency.push([ parseInt(matches[0]), matches[1] ]);
+    if(matches != null && matches.length >= 3) {
+      messageFrequency.push([ parseInt(matches[1]), matches[2] ]);
     }
   }
   messageFrequency.sort(function(a, b) {
-    return a[0] - b[0];
+    return b[0] - a[0];
   });
   if(messageFrequency.length >= 5) {
     return messageFrequency.slice(0, 5);

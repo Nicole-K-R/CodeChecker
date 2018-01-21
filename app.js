@@ -93,7 +93,6 @@ var checkPythonFormatting = async function(repoDetails){
     //cmd.run('pycodestyle --show-source --show-pep8 python > ./uploads/' + repoName + '1.txt');
 
     var resultFilename = path.join('uploads', repoName + '2.txt');
-    console.log(resultFilename);
     var temp = await cmd.run('pycodestyle --statistics -qq  python > ' + resultFilename);
     
     // Call function to turn error text files to json to send back to front-end
