@@ -10,8 +10,6 @@ RUN \
 WORKDIR /app
 
 # Set mongodb password env variable inside container
-ARG mongo_password
-ENV PENNAPPS_MONGO_PASSWORD=$mongo_password
 
 # Install Python packages
 COPY requirements.txt ./
