@@ -28,14 +28,10 @@ var deleteAllFilesInFolder = function(folder){
 }
 
 // Delete files in a specific folder (uploads)
-var deleteAllFilesInUploads = function(folder = 'uploads/'){
-    if(fs.existsSync(folder)) {
-        fs.readdirSync(folder).forEach(function (file) {
-            fs.unlinkSync(path.join(__dirname, `/uploads/${file}`));
-        });
-    } else {
-        fs.mkdirSync(folder);
-    }
+var deleteAllFilesInUploads = function(folder = './uploads/'){
+    fs.readdirSync(folder).forEach(function (file) {
+        fs.unlinkSync(path.join(__dirname, `/uploads/${file}`));
+    });
 }
 
 // Converts the text files to JSON objects and calculates a score
@@ -85,7 +81,6 @@ var checkPythonFormatting = async function(repoDetails){
     // Make directory and clone files from the repo into it
     const mkdir = spawnSync('mkdir', ['./cctmp']);
     const clone = spawnSync('git', ['clone', repoDetails.clone_url, './cctmp']);
-    var returnScore = -1;
     movePythonFiles();
     // Delete files from cctmp folder
     const rmdir = spawnSync('rm', ['-r', './cctmp']);
@@ -151,6 +146,7 @@ var getFiles = async function(userName) {
         score += scorePy[i][1];
         obj[scorePy[i][0]] = scorePy[i][1];
     }
+    //TODO
     scorePy[0][(scorePy.length - 1)] = 'Average';
     obj[scorePy[0][(scorePy.length - 1)]] = Number((score/(scorePy.length)).toFixed(0));
     // var variable = JSON.stringify(obj);

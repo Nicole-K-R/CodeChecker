@@ -24,6 +24,14 @@ var styleRuleSchema = new Schema({
 var StyleRule = mongoose.model('StyleRule', styleRuleSchema);
 exports.StyleRule = StyleRule;
 
+var styleCategorySchema = new Schema({
+  name: String,
+  language_id: {type: Schema.Types.ObjectId, ref: 'Language'},
+  regex_match: String
+});
+var StyleCategory = mongoose.model('StyleCategory', styleCategorySchema);
+exports.StyleCategory = StyleCategory;
+
 var extSchema = new Schema({
   extension: String,
   language_id: {type: Schema.Types.ObjectId, ref: 'Language'}
