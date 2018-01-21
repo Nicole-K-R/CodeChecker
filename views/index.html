@@ -138,15 +138,16 @@ $(function(){
           success: function(score){
             console.log(score);
             var scoreshtml = '<div class="row">';
-            for(x in score) {
-              scoreshtml += '<div class="col-lg-4 mb-4"><div class="card h-100"><h4 class="card-header">' + x + '</h4><div class="card-body"><p class="card-text">' + score[x] + '</p></div><div class="card-footer"><a href="#" class="btn btn-primary">Learn More</a></div></div></div>';
+            for(x in score.repos) {
+              scoreshtml += '<div class="col-lg-4 mb-4"><div class="card h-100"><h4 class="card-header">' + x.name + '</h4><div class="card-body"><p class="card-text">' + 
+              x.score + '</p></div><div class="card-footer"><a href="#" class="btn btn-primary">Learn More</a></div></div></div>';
             }
             scoreshtml += '</div>';
             if(score[x] != null){
               document.getElementById("profile_score").innerHTML = scoreshtml;
             }
             else{
-              document.getElementById("profile_score").innerHTML = 'No relevant repositories';
+              document.getElementById("profile_score").innerHTML = '<p class="lead">No relevant repositories</p>';
             }
           }
         });
