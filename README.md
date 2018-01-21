@@ -1,4 +1,4 @@
-# CodeChecker
+# GitCheck
 
 Input your github profile link to get a code style score
 
