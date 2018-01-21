@@ -106,10 +106,28 @@ $(function(){
             $.each(repositories, function(index) {
               outhtml = outhtml + '<li><a href="'+repositories[index].html_url+'" target="_blank">'+repositories[index].name + '</a></li>';
             });
-            outhtml = outhtml + '</ul></div>'; 
+            outhtml = outhtml + '</ul></div>';
           }
           $('#ghapidata').html(outhtml);
         } // end outputPageContent()
+
+        $.ajax(){
+          type: "POST",
+          url: "/" + username,
+          success: function(score){
+            var scoreshtml = '<div class="row">';
+            for(x in score) {
+              scoreshtml += '<div class="col-lg-4 mb-4"><div class="card h-100"><h4 class="card-header">' + x + '</h4><div class="card-body"><p class="card-text">' + score[x] + '</p></div><div class="card-footer"><a href="#" class="btn btn-primary">Learn More</a></div></div></div>';
+            }
+            scoreshtml += '</div>';
+            document.getElementById("profile_score").innerHTML = scoreshtml;
+          }
+        }
+        
+
+
+        
+
       } // end else statement
     }); // end requestJSON Ajax call
   }); // end click event handler
@@ -138,8 +156,9 @@ $(function(){
         <div class="row">
           <div class="col-lg-8 mx-auto">
             <h2>Profile Score:</h2>
-            <img id="profile_pic" src=""></img>
+            <div id="profile_score">
             <p class="lead">You haven't searched a profile yet.</p>
+            </div>
           </div>
         </div>
       </div>
