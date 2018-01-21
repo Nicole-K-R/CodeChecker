@@ -131,21 +131,20 @@ $(function(){
         } // end outputPageContent()
 
         document.getElementById("profile_score").innerHTML = '<img src="css/loader.gif" alt="loading...">';
-        var scoreshtml = '<p>No valid repos were found.</p>';
         $.ajax({
           type: "POST",
           url: "/" + username,
           dataType: 'json',
           success: function(score){
             console.log(score);
-            scoreshtml = '<div class="row">';
+            var scoreshtml = '<div class="row">';
             for(x in score) {
               scoreshtml += '<div class="col-lg-4 mb-4"><div class="card h-100"><h4 class="card-header">' + x + '</h4><div class="card-body"><p class="card-text">' + score[x] + '</p></div><div class="card-footer"><a href="#" class="btn btn-primary">Learn More</a></div></div></div>';
             }
             scoreshtml += '</div>';
+            document.getElementById("profile_score").innerHTML = scoreshtml;
           }
         });
-        document.getElementById("profile_score").innerHTML = scoreshtml;
 
       } // end else statement
     }); // end requestJSON Ajax call
