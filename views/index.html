@@ -53,11 +53,25 @@
       <div id="w">
     <h1>Welcome to the Code Checker Tool</h1>
     <p>Enter a single Github username below and click the button to score the profile.</p>
+    <div class="row">
+      <input type="text" name="ghusername" id="ghusername" placeholder="Github username...">
+    </div>
     
-    <input type="text" name="ghusername" id="ghusername" placeholder="Github username...">
-    
-    <a href="#" id="ghsubmitbtn">Score!</a>
-    
+    <div class="row">
+      <a class="btn score-btn" href="#" id="ghsubmitbtn">Score!</a>
+      <form class="btn form-btn" action="#">
+        <select name="cars">
+          <option value="Python">Python</option>
+          <option value="Fortran">Fortran</option>
+          <option value="Java">Java</option>
+          <option value="C++">C++</option>
+          <option value="PHP">Node.js</option>
+          <option value="PHP">JavaScript</option>
+          <option value="PHP">PHP</option>
+        </select>
+      </form>
+      
+    </div>
     <div id="ghapidata" class="clearfix"></div>
   </div>
 <script type="text/javascript">
@@ -68,7 +82,10 @@ $(function(){
     
     var username = $('#ghusername').val();
     var requri   = 'https://api.github.com/users/'+username;
-    var repouri  = 'https://api.github.com/users/'+username+'/repos';
+    //var repouri  = 'https://api.github.com/users/'+username+'/repos';
+	
+	// Hard-coded "language:python" to restrict the repos to only those containing .py files, sorted in desc order by stars.
+	var repouri  = 'https://api.github.com/search/repositories?q=+user:' + username + '+language:python&sort=stars&order=desc';
     
     requestJSON(requri, function(json) {
       if(json.message == "Not Found" || username == '') {
@@ -95,14 +112,14 @@ $(function(){
         
         var repositories;
         $.getJSON(repouri, function(json){
-          repositories = json;   
+          repositories = json.items;   
           outputPageContent();                
         });          
         
         function outputPageContent() {
           if(repositories.length == 0) { outhtml = outhtml + '<p>No repos!</p></div>'; }
           else {
-            outhtml = outhtml + '<p><strong>Repos List:</strong></p> <ul>';
+            outhtml = outhtml + '<p><strong>Python Repos List:</strong></p> <ul>';
             $.each(repositories, function(index) {
               outhtml = outhtml + '<li><a href="'+repositories[index].html_url+'" target="_blank">'+repositories[index].name + '</a></li>';
             });

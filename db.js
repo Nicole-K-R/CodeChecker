@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const mongoPassword = process.env.PENNAPPS_MONGO_PASSWORD;
+const mongoPassword = 'code_checker';
 mongoose.connect('mongodb://PennApps18:' + mongoPassword + '@code-checker-shard-00-00-ala2x.mongodb.net:27017,code-checker-shard-00-01-ala2x.mongodb.net:27017,code-checker-shard-00-02-ala2x.mongodb.net:27017/codechecker?ssl=true&replicaSet=code-checker-shard-0&authSource=admin');
 
 var Schema = mongoose.Schema;
@@ -18,6 +18,7 @@ var styleRuleSchema = new Schema({
   name: String,
   language_id: {type: Schema.Types.ObjectId, ref: 'Language'},
   regex_match: String,
+  regex_match_count: String,
   weight: Number
 });
 var StyleRule = mongoose.model('StyleRule', styleRuleSchema);

@@ -7,6 +7,18 @@ Input your github profile link to get a code style score
 npm install
 pip install -r requirements.txt
 ```
+Add database password to environment variables
+On mac:
+Run this in terminal OR add this to ```~/.bashrc```
+```
+export PENNAPPS_MONGO_PASSWORD="password_here"
+```
+
+On windows:
+```
+setx PENNAPPS_MONGO_PASSWORD password_here
+```
+
 ## Running
 ```
 node app.js
