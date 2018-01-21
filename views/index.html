@@ -172,7 +172,9 @@ $(function(){
                   labels: Object.keys(repo.categories),
                   datasets : [{
                     label : "Distribution of Errors",
-                    data : Object.values(repo.categories),
+                    data : Object.keys(repo.categories).map(function(key) {
+                      return repo.categories[key];
+                    }),
                     backgroundColor: [
                     'rgb(255, 99, 132)',
                     'rgb(54, 162, 235)',
