@@ -138,10 +138,10 @@ $(function(){
           success: function(scores){
             console.log(scores);
             var scoreshtml = '<div class="row">';
-            var scoreParsed = JSON.parse(scores);
-            for(x in scoreParsed.repos) {
-              scoreshtml += '<div class="col-lg-4 mb-4"><div class="card h-100"><h4 class="card-header">' + x.name + '</h4><div class="card-body"><p class="card-text">' + 
-              x.score + '</p></div><div class="card-footer"><a href="#" class="btn btn-primary">Learn More</a></div></div></div>';
+            for(var i = 0; i < scores.repos.length; i++) {
+              var repo = scores.repos[i];
+              scoreshtml += '<div class="col-lg-4 mb-4"><div class="card h-100"><h4 class="card-header">' + repo.name + '</h4><div class="card-body"><p class="card-text">' + 
+                repo.score + '</p></div><div class="card-footer"><a href="#" class="btn btn-primary">Learn More</a></div></div></div>';
             }
             scoreshtml += '</div>';
             document.getElementById("profile_score").innerHTML = scoreshtml;

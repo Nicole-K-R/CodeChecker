@@ -1,7 +1,7 @@
 const db = require('./db');
 const fs = require('fs');
 
-var weightScale = 10;
+var weightScale = 250;
 
 var regexWeight = function(line, ruleObjects) {
   for(var i = 0; i < ruleObjects.length; i++) {
@@ -64,12 +64,13 @@ var scoreRepo = async function(filepath, extensionValue = '.py') {
     // set initial repo score to 100
     var score = 100.0;
     var lines = fs.readFileSync(filepath).toString().split('\n');
+    var numLines = lines.length;
 
     
     // iterate over each line, deduct weighted amounts based on the style rule
     for(var i = 0; i < lines.length; i++) {
       var lineWeight = regexWeight(lines[i], ruleObjects);
-      score -= lineWeight;
+      score -= lineWeight / numLines;
       var categoryName = getCategoryName(lines[i], categoryObjects);
       if(categoryName != null) {
         if(!categories[categoryName]) {
