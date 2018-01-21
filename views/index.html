@@ -109,6 +109,7 @@ $(function(){
         
         var outhtml = '<div align="center"><h2>'+fullname+' <span class="smallname">(@<a href="'+profileurl+'" target="_blank">'+username+'</a>)</span></h2></div>';
         outhtml = outhtml + '<div style="text-align:center;"><div class="ghcontent"><div style="display:inline-block;"><div class="avi"><a href="'+profileurl+'" target="_blank"><img src="'+aviurl+'" width="80" height="80" alt="'+username+'"></a></div></div>';
+        outhtml = outhtml + '<h2 id="average_score"></h2>';
         outhtml = outhtml + '<p>Followers: '+followersnum+' - Following: '+followingnum+'<br>Repos: '+reposnum+'</p></div></div>';
         outhtml = outhtml + '<div class="repolist clearfix" align="center">';
         
@@ -139,7 +140,7 @@ $(function(){
           dataType: 'json',
           success: function(scores){
 
-
+            document.getElementById("average_score").innerHTML = scores.average;
             console.log(scores);
             var scoreshtml = '<div class="row">';
             for(var i = 0; i < scores.repos.length; i++) {
