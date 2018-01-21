@@ -36,13 +36,10 @@ var deleteAllFilesInUploads = function(folder = './uploads/'){
 
 // Converts the text files to JSON objects and calculates a score
     // Called by checkPythonFormatting
-var textToJSONPython = async function(fileName, extensionValue = '.py'){
-    var textFiles = [];
-    fs.readdirSync(folder).forEach(function (file) {
-        textFiles.push(path.join(folder, file));
-    });
-    var scoreValue = await score.scoreProfile(textFiles);
-    return scoreValue;
+var textToJSONPython = async function(repoName, resultFilename, extensionValue = '.py'){
+    var scoreDetails = await score.scoreRepo(resultFilename, extensionValue);
+    scoreDetails['name'] = repoName;
+    return scoreDetails;
 }
 
 var walkThroughFiles = function(dir, extension, filelist) {
@@ -86,18 +83,20 @@ var checkPythonFormatting = async function(repoDetails){
     const rmdir = spawnSync('rm', ['-r', './cctmp']);
     var repoName = repoDetails.name;
     // Install pycodestyle and change directory to uploads folder
-    cmd.run('pip install pycodestyle');
-    cmd.run('cd python');
+    //cmd.run('pip install pycodestyle');
+    //cmd.run('cd python');
         // Run pycodestyle on the python files and save it to <repoName>.txt 
         // (first displays errors and solutions, second displays number of each errors)
         // pycodestyle --show-source --show-pep8 <folder> > uploads/test.txt (1)
         // pycodestyle --statistics -qq <folder> > uploads/test.txt (2)
-    cmd.run('pycodestyle --show-source --show-pep8 python > ./uploads/' + repoName + '1.txt');
-    cmd.run('pycodestyle --statistics -qq  python > ./uploads/' + repoName + '2.txt');
-    sleep.msleep(1500);
+    
+    //cmd.run('pycodestyle --show-source --show-pep8 python > ./uploads/' + repoName + '1.txt');
+
+    var resultFilename = path.join('uploads', repoName + '2.txt');
+    var temp = await cmd.run('pycodestyle --statistics -qq  python > ' + resultFilename);
     
     // Call function to turn error text files to json to send back to front-end
-    var result = await textToJSONPython(repoName); // Send score
+    var result = await textToJSONPython(repoName, resultFilename, '.py'); // Send score
     return result;
 }
 
@@ -111,6 +110,7 @@ var getAllRepos = async function(username) {
             if (!error && response.statusCode == 200) {
                 resolve(body);
             } else {
+                console.log("Error retrieveing github repos");
                 reject(error);
             }
         });
@@ -133,28 +133,29 @@ var getFiles = async function(userName) {
       });
     }
 
+    var averageTotal = 0;
+    var averageNum = 0;
     for(var i = 0; i < repos.length; i++) {
         // Number((6.688689).toFixed(0)); // 7
-        var check = await checkPythonFormatting(repos[i]);
-        check = Number((check).toFixed(0));
-        scorePy.push([repos[i].name, check]);
+        var check;
+        try {
+            check = await checkPythonFormatting(repos[i]);
+        } catch(err) {
+            console.log(err);
+        }
+        scorePy.push(check);
+        averageTotal += check['score'];
+        averageNum++;
     }
 
-    var score = 0;
-    var obj = {};
-    for (var i = 0; i < scorePy.length; i++){
-        score += scorePy[i][1];
-        obj[scorePy[i][0]] = scorePy[i][1];
+    var averageScore;
+    if(averageNum != 0) {
+        averageScore = Number((averageTotal / averageNum).toFixed(0));
+    } else {
+        averageScore = 0;
     }
 
-    obj['Average'] = Number((score/(scorePy.length)).toFixed(0));
-    // var variable = JSON.stringify(obj);
-    // console.log(variable);
-    // var num = 1;
-    // console.log(typeof num);
-    // console.log(typeof obj);
-    // console.log(typeof variable);
-    // return variable;
+    var obj = { 'average': averageScore, 'repos': scorePy };
     return obj;
 };
 
@@ -176,7 +177,12 @@ app.post('/:userName', async function (req, res) {
     var userName = req.params.userName
     var url = 'https://github.com/' + userName;
     // Download files from github repos to uploads folder
-    var variable = await getFiles(userName);
+    var variable;
+    try {
+        variable = await getFiles(userName);
+    } catch(err) {
+        console.log(err);
+    }
     var sendVal = JSON.stringify(variable);
     console.log(sendVal);
     // var sendVal = getFiles(userName)
