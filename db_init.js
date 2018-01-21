@@ -39,17 +39,21 @@ var dbInit = function() {
     }
   });
 
+  db.StyleCategory.find({}, function(err, items) {
+    for(var i = 0; i < items.length; i++) {
+      items[i].remove();
+    }
+  });
 
 
 
-  /*var rule = new db.StyleRule({
+
+  var category = new db.StyleCategory({
     name: 'Indentation',
     language_id: pythonLang,
-    regex_match: '\\d*\\t*E1.*',
-    regex_match_count: '(\\d*)\\t*E1.*',
-    weight: 0.1
+    regex_match: '\\d*\\t*E1.*'
   });
-  rule.save(onError);*/
+  category.save(onError);
   var rule = new db.StyleRule({
     name: 'indentation contains mixed spaces and tabs',
     language_id: pythonLang,
@@ -194,14 +198,12 @@ var dbInit = function() {
     weight: 0.1
   });
   rule.save(onError);
-  /*rule = new db.StyleRule({
+  category = new db.StyleCategory({
     name: 'Whitespace',
     language_id: pythonLang,
-    regex_match: '\\d*\\t*E2.*',
-    regex_match_count: '(\\d*)\\t*E2.*',
-    weight: 0.1
+    regex_match: '\\d*\\t*E2.*'
   });
-  rule.save(onError);*/
+  category.save(onError);
   rule = new db.StyleRule({
     name: 'whitespace after ‘(‘',
     language_id: pythonLang,
@@ -402,14 +404,12 @@ var dbInit = function() {
     weight: 0.1
   }); 
   rule.save(onError);
-  /*rule = new db.StyleRule({
+  category = new db.StyleCategory({
     name: 'Blank line',
     language_id: pythonLang,
-    regex_match: '\\d*\\t*E3.*',
-    regex_match_count: '(\\d*)\\t*E3.*',
-    weight: 0.1
+    regex_match: '\\d*\\t*E3.*'
   });
-  rule.save(onError);*/
+  category.save(onError);
   rule = new db.StyleRule({
     name: 'expected 1 blank line, found 0',
     language_id: pythonLang,
@@ -458,14 +458,12 @@ var dbInit = function() {
     weight: 0.1
   });
   rule.save(onError);
-  /*rule = new db.StyleRule({
+  category = new db.StyleCategory({
     name: 'Import',
     language_id: pythonLang,
-    regex_match: '\\d*\\t*E4.*',
-    regex_match_count: '(\\d*)\\t*E4.*',
-    weight: 0.1
+    regex_match: '\\d*\\t*E4.*'
   });
-  rule.save(onError);*/
+  category.save(onError);
   rule = new db.StyleRule({
     name: 'multiple imports on one line',
     language_id: pythonLang,
@@ -482,14 +480,12 @@ var dbInit = function() {
     weight: 0.1
   }); 
   rule.save(onError);
-  /*rule = new db.StyleRule({
+  category = new db.StyleCategory({
     name: 'Line length',
     language_id: pythonLang,
-    regex_match: '\\d*\\t*E5.*',
-    regex_match_count: '(\\d*)\\t*E5.*',
-    weight: 0.1
+    regex_match: '\\d*\\t*E5.*'
   });
-  rule.save(onError);*/
+  category.save(onError);
   rule = new db.StyleRule({
     name: '(^)	line too long (82 > 79 characters)',
     language_id: pythonLang,
@@ -506,14 +502,12 @@ var dbInit = function() {
     weight: 0.1
   });
   rule.save(onError);
-  /*rule = new db.StyleRule({
+  category = new db.StyleCategory({
     name: 'Statement',
     language_id: pythonLang,
-    regex_match: '\\d*\\t*E7.*',
-    regex_match_count: '(\\d*)\\t*E7.*',
-    weight: 0.1
+    regex_match: '\\d*\\t*E7.*'
   });
-  rule.save(onError);*/
+  category.save(onError);
   rule = new db.StyleRule({
     name: 'multiple statements on one line (colon)',
     language_id: pythonLang,
@@ -626,14 +620,12 @@ var dbInit = function() {
     weight: 0.1
   });   
   rule.save(onError);
-  /*rule = new db.StyleRule({
+  category = new db.StyleCategory({
     name: 'Runtime',
     language_id: pythonLang,
-    regex_match: '\\d*\\t*E9.*',
-    regex_match_count: '(\\d*)\\t*E9.*',
-    weight: 0.1
+    regex_match: '\\d*\\t*E9.*'
   });
-  rule.save(onError);*/
+  category.save(onError);
   rule = new db.StyleRule({
     name: 'SyntaxError or IndentationError',
     language_id: pythonLang,
@@ -650,14 +642,12 @@ var dbInit = function() {
     weight: 0.1
   });  
   rule.save(onError);
-  /*rule = new db.StyleRule({
+  category = new db.StyleCategory({
     name: 'Indentation warning',
     language_id: pythonLang,
-    regex_match: '\\d*\\t*W1.*',
-    regex_match_count: '(\\d*)\\t*W1.*',
-    weight: 0.1
+    regex_match: '\\d*\\t*W1.*'
   });
-  rule.save(onError);*/
+  category.save(onError);
   rule = new db.StyleRule({
     name: 'indentation contains tabs',
     language_id: pythonLang,
@@ -666,14 +656,12 @@ var dbInit = function() {
     weight: 0.1
   });
   rule.save(onError);
-  /*rule = new db.StyleRule({
+  category = new db.StyleCategory({
     name: 'Whitespace warning',
     language_id: pythonLang,
-    regex_match: '\\d*\\t*W2.*',
-    regex_match_count: '(\\d*)\\t*W2.*',
-    weight: 0.1
+    regex_match: '\\d*\\t*W2.*'
   });
-  rule.save(onError);*/
+  category.save(onError);
   rule = new db.StyleRule({
     name: 'trailing whitespace',
     language_id: pythonLang,
@@ -698,14 +686,12 @@ var dbInit = function() {
     weight: 0.1
   });
   rule.save(onError);
-  /*rule = new db.StyleRule({
+  category = new db.StyleCategory({
     name: 'Blank line warning',
     language_id: pythonLang,
-    regex_match: '\\d*\\t*W3.*',
-    regex_match_count: '(\\d*)\\t*W3.*',
-    weight: 0.1
+    regex_match: '\\d*\\t*W3.*'
   });
-  rule.save(onError);*/
+  category.save(onError);
   rule = new db.StyleRule({
     name: 'blank line at end of file',
     language_id: pythonLang,
@@ -714,14 +700,12 @@ var dbInit = function() {
     weight: 0.1
   });
   rule.save(onError);
-  /*rule = new db.StyleRule({
+  category = new db.StyleCategory({
     name: 'Line break warning',
     language_id: pythonLang,
-    regex_match: '\\d*\\t*W5.*',
-    regex_match_count: '(\\d*)\\t*W5.*',
-    weight: 0.1
+    regex_match: '\\d*\\t*W5.*'
   });
-  rule.save(onError);*/
+  category.save(onError);
   rule = new db.StyleRule({
     name: '(*)	line break occurred before a binary operator',
     language_id: pythonLang,
@@ -730,14 +714,12 @@ var dbInit = function() {
     weight: 0.1
   }); 
   rule.save(onError);
-  /*rule = new db.StyleRule({
+  category = new db.StyleCategory({
     name: 'Deprecation warning',
     language_id: pythonLang,
-    regex_match: '\\d*\\t*W6.*',
-    regex_match_count: '(\\d*)\\t*W6.*',
-    weight: 0.1
+    regex_match: '\\d*\\t*W6.*'
   });
-  rule.save(onError);*/
+  category.save(onError);
   rule = new db.StyleRule({
     name: '.has_key() is deprecated, use ‘in’',
     language_id: pythonLang,
