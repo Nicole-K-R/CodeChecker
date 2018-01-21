@@ -146,9 +146,8 @@ var getFiles = async function(userName) {
         score += scorePy[i][1];
         obj[scorePy[i][0]] = scorePy[i][1];
     }
-    //TODO
-    scorePy[0][(scorePy.length - 1)] = 'Average';
-    obj[scorePy[0][(scorePy.length - 1)]] = Number((score/(scorePy.length)).toFixed(0));
+
+    obj['Average'] = Number((score/(scorePy.length)).toFixed(0));
     // var variable = JSON.stringify(obj);
     // console.log(variable);
     // var num = 1;
