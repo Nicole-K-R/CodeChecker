@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Code Checker</title>
+    <title>GitCheck</title>
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -29,20 +29,17 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
       <div class="container">
-        <a class="navbar-brand js-scroll-trigger" href="#page-top">Code Checker</a>
+        <a class="navbar-brand js-scroll-trigger" href="#page-top">GitCheck</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#about">Score</a>
+              <a class="nav-link js-scroll-trigger" href="#about"><font size="+0">Ratings</font></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#services">Suggestions</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#contact">About</a>
+              <a class="nav-link js-scroll-trigger" href="#services"><font size="+0">Suggestions</font></a>
             </li>
           </ul>
         </div>
@@ -51,13 +48,14 @@
 
     <header class="bg-primary">
       <div id="w">
-    <h1>Welcome to the Code Checker Tool</h1>
-    <p>Enter a single Github username below and click the button to score the profile.</p>
+    <h1 align="center">Improve your code styling and see how you rank with GitCheck!</h1>
+    <p align="center"><font size="+1">Enter a single GitHub username below and click the button to score the profile.</font></p>
     <div class="row">
-      <input type="text" name="ghusername" id="ghusername" placeholder="Github username...">
+      <input type="text" name="ghusername" id="ghusername" placeholder="GitHub username..." style="margin:0 auto;">
     </div>
     
     <div class="row">
+      <div style="margin:0 auto;margin-top: 10px;">
       <a class="btn score-btn" href="#" id="ghsubmitbtn">Score!</a>
       <form class="btn form-btn" action="#">
         <select name="cars">
@@ -70,6 +68,7 @@
           <option value="PHP">PHP</option>
         </select>
       </form>
+    </div>
       
     </div>
     <div id="ghapidata" class="clearfix"></div>
@@ -107,10 +106,10 @@ $(function(){
         
         if(fullname == undefined) { fullname = username; }
         
-        var outhtml = '<h2>'+fullname+' <span class="smallname">(@<a href="'+profileurl+'" target="_blank">'+username+'</a>)</span></h2>';
-        outhtml = outhtml + '<div class="ghcontent"><div class="avi"><a href="'+profileurl+'" target="_blank"><img src="'+aviurl+'" width="80" height="80" alt="'+username+'"></a></div>';
-        outhtml = outhtml + '<p>Followers: '+followersnum+' - Following: '+followingnum+'<br>Repos: '+reposnum+'</p></div>';
-        outhtml = outhtml + '<div class="repolist clearfix">';
+        var outhtml = '<div align="center"><h2>'+fullname+' <span class="smallname">(@<a href="'+profileurl+'" target="_blank">'+username+'</a>)</span></h2></div>';
+        outhtml = outhtml + '<div style="text-align:center;"><div class="ghcontent"><div style="display:inline-block;"><div class="avi"><a href="'+profileurl+'" target="_blank"><img src="'+aviurl+'" width="80" height="80" alt="'+username+'"></a></div></div>';
+        outhtml = outhtml + '<p>Followers: '+followersnum+' - Following: '+followingnum+'<br>Repos: '+reposnum+'</p></div></div>';
+        outhtml = outhtml + '<div class="repolist clearfix" align="center">';
         
         var repositories;
         $.getJSON(repouri, function(json){
@@ -121,11 +120,11 @@ $(function(){
         function outputPageContent() {
           if(repositories.length == 0) { outhtml = outhtml + '<p>No python repos!</p></div>'; }
           else {
-            outhtml = outhtml + '<p><strong>Python Repos List:</strong></p> <ul>';
+            outhtml = outhtml + '<p><strong>Python Repos List:</strong></p> <div style="text-align:center;"><ul>';
             $.each(repositories, function(index) {
-              outhtml = outhtml + '<li><a href="'+repositories[index].html_url+'" target="_blank">'+repositories[index].name + '</a></li>';
+              outhtml = outhtml + '<li style="display:inline-block;"><a href="'+repositories[index].html_url+'" target="_blank">'+repositories[index].name + '</a></li>';
             });
-            outhtml = outhtml + '</ul></div>';
+            outhtml = outhtml + '</ul></div></div>';
           }
           $('#ghapidata').html(outhtml);
         } // end outputPageContent()
@@ -175,7 +174,7 @@ $(function(){
       <div class="container">
         <div class="row">
           <div class="col-lg-8 mx-auto">
-            <h2>Profile Score:</h2>
+            <h2>Repository Ratings:</h2>
             <div id="profile_score">
             <p class="lead">You haven't searched a profile yet.</p>
             </div>
@@ -190,17 +189,6 @@ $(function(){
           <div class="col-lg-8 mx-auto">
             <h2>Code Suggestions:</h2>
             <p class="lead">You haven't searched a profile yet.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="contact">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 mx-auto">
-            <h2>About Us:</h2>
-            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero odio fugiat voluptatem dolor, provident officiis, id iusto! Obcaecati incidunt, qui nihil beatae magnam et repudiandae ipsa exercitationem, in, quo totam.</p>
           </div>
         </div>
       </div>
