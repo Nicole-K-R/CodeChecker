@@ -21,6 +21,7 @@
   <link rel="icon" href="http://d15dxvojnvxp1x.cloudfront.net/assets/favicon.ico">
   
   <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+  <script type="text/javascript" src="js/Chart.min.js"></script>
 
   </head>
 
@@ -115,7 +116,9 @@ $(function(){
         $.getJSON(repouri, function(json){
           repositories = json.items;   
           outputPageContent();                
-        });          
+        });      
+        
+        
         
         function outputPageContent() {
           if(repositories.length == 0) { outhtml = outhtml + '<p>No python repos!</p></div>'; }
@@ -135,16 +138,90 @@ $(function(){
           url: "/" + username,
           dataType: 'json',
           success: function(scores){
+
+
             console.log(scores);
             var scoreshtml = '<div class="row">';
             for(var i = 0; i < scores.repos.length; i++) {
+              
+              
+              
               var repo = scores.repos[i];
-              scoreshtml += '<div class="col-lg-4 mb-4"><div class="card h-100"><h4 class="card-header">' + repo.name + '</h4><div class="card-body"><p class="card-text">' + 
-                repo.score + '</p></div><div class="card-footer"><a href="#" class="btn btn-primary">Learn More</a></div></div></div>';
-            }
+              scoreshtml += '<div class="col-lg-6 mb-6"><div class="card h-100"><h4 class="card-header">' + repo.name + '</h4><div class="card-body">' +
+                '<span class="outer-bar"><span class="inner-bar" style="width: ' + repo.score + '%;"></span><span class="bar-text">' + repo.score + '%</span></span>' + 
+                '<canvas id="myChart' + i + '"></canvas></div><div class="card-footer"><a href="#" class="btn btn-primary">Learn More</a></div></div></div>';
+ 
+                
+                
+                         
+            
+              }
             scoreshtml += '</div>';
             document.getElementById("profile_score").innerHTML = scoreshtml;
+            for(var i = 0; i < scores.repos.length; i++) {
+              var repo = scores.repos[i];
+
+              //for(var i = 0; i < scores.repos.length; i++) {
+              
+              
+              var ctx = document.getElementById("myChart" + i).getContext('2d');
+              
+              var myPieChart = new Chart(ctx,{
+                type: 'pie',
+                data: {
+                  labels: Object.keys(repo.categories),
+                  datasets : [{
+                    label : "Distribution of Errors",
+                    data : Object.values(repo.categories),
+                    backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)',
+                    'rgb(75, 192, 192)',
+                    'rgb(255, 159, 64)',
+                    'rgb(153, 102, 255)',
+                    'rgb(201, 203, 207)',
+                  ],
+                  }]
+                },
+            
+                options:{
+                  scales: {
+                    xAxes: [{
+                      display: this.scalesdisplay,
+                      ticks: {
+                          beginAtZero:this.beginzero,
+                      }
+                  }],
+                  yAxes: [{
+                    display: this.scalesdisplay,
+                    ticks: {
+                        beginAtZero:this.beginzero,
+                    }
+                }]
+                }
+              }
+            });
           }
+
+          // populate code suggestions
+          if(scores.messages) {
+            var suggestion_element = '<p>';
+            if(scores.messages.length >= 1) {
+              suggestion_element += 'Unfortunately, it looks like you are having a lot of trouble with ' + scores.messages[0][2] + '.<br><br>';
+            }
+            if(scores.messages.length >= 2) {
+              suggestion_element += 'Unfortunately, it looks like you are having some trouble with ' + scores.messages[1][2] + '.<br><br>';
+            }
+            if(scores.messages.length >= 3) {
+              suggestion_element += 'Unfortunately, it looks like you are having a little trouble with ' + scores.messages[2][2] + '.<br><br>';
+            }
+            suggestion_element += '</p>';
+            
+            document.getElementById("profile_suggestions").innerHTML = suggestion_element;
+          }
+          
+          } // end of success functions
         });
 
       } // end else statement
@@ -160,6 +237,9 @@ $(function(){
     });
   }
 });
+
+
+
 </script>
     </header>
 
@@ -188,7 +268,9 @@ $(function(){
         <div class="row">
           <div class="col-lg-8 mx-auto">
             <h2>Code Suggestions:</h2>
+            <div id="profile_suggestions">
             <p class="lead">You haven't searched a profile yet.</p>
+            </div>
           </div>
         </div>
       </div>

@@ -116,7 +116,22 @@ var getAllRepos = async function(username) {
         });
     });
 };
+
+var getTopMessages = function(repoScoreDetails) {
+    var allMessages = [];
+    for(var i = 0; i < repoScoreDetails.length; i++) {
+        allMessages = allMessages.concat(repoScoreDetails[i]['frequent']);
+    }
     
+    allMessages.sort(function(a, b) {
+        return b[0] - a[0];
+    });
+    if(allMessages.length >= 3) {
+        return allMessages.slice(0, 3);
+    } else {
+        return allMessages; //returns array of 'tuple'-type arrays [ [22, "message"], ...]
+    }
+};
 
 // Gets repos from GitHub API
     // Calls checkPythonFormatting and getAllRepos & called by express route
@@ -132,6 +147,8 @@ var getFiles = async function(userName) {
         'clone_url': reposJson[i].clone_url
       });
     }
+
+    
 
     var averageTotal = 0;
     var averageNum = 0;
@@ -155,7 +172,7 @@ var getFiles = async function(userName) {
         averageScore = 0;
     }
 
-    var obj = { 'average': averageScore, 'repos': scorePy };
+    var obj = { 'average': averageScore, 'repos': scorePy, 'messages': getTopMessages(scorePy) };
     return obj;
 };
 
