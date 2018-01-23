@@ -14,25 +14,9 @@ const assert = require('assert');
 const fs = require('fs');
 var mv = require('mv');
 var sleep = require('sleep');
-// ******* Variable(s) *******//
-var folder = 'uploads/';
 // ******* Call score.js *******//
 var score = require('./score');
 
-
-// Delete files in a specific folder
-var deleteAllFilesInFolder = function(folder){
-    fs.readdirSync(folder).forEach(function (file) {
-        fs.unlinkSync(path.join(__dirname, 'python/' + file));
-    });
-}
-
-// Delete files in a specific folder (uploads)
-var deleteAllFilesInUploads = function(folder = './uploads/'){
-    fs.readdirSync(folder).forEach(function (file) {
-        fs.unlinkSync(path.join(__dirname, `/uploads/${file}`));
-    });
-}
 
 // Converts the text files to JSON objects and calculates a score
     // Called by checkPythonFormatting
@@ -59,32 +43,21 @@ var walkThroughFiles = function(dir, extension, filelist) {
     return filelist;
 };
 
-
-// Moves all python files from cctmp folder and moves them to python folder
-    // Called by checkPythonFormatting
-var movePythonFiles = function (){
-    var pythonFiles = walkThroughFiles('cctmp', '.py');
-    for (var i = 0; i < pythonFiles.length; i ++){
-        cmd.run('mkdir python \n cd cctmp \n mv ' + pythonFiles[i] + ' ../python');
-    }
-}
-
 // Check python formatting (checks pep8 on cctmp folder and checks for formatting errors in the .py files and
 // stores errors in text files in the uploads directory)
     // Calls textToJSONPython & called by getFiles
 var checkPythonFormatting = async function(repoDetails){
     // Delete python files
-    deleteAllFilesInFolder('python');
+    //deleteAllFilesInFolder('python');
     // Make directory and clone files from the repo into it
-    const mkdir = spawnSync('mkdir', ['./cctmp']);
-    const clone = spawnSync('git', ['clone', repoDetails.clone_url, './cctmp']);
-    movePythonFiles();
-    // Delete files from cctmp folder
-    const rmdir = spawnSync('rm', ['-r', './cctmp']);
+    
+    var randString = Math.random().toString(36).substring(7);
+    var randPath = path.join('cctmp', randString);
+    const mkdir = spawnSync('mkdir', [randPath]);
+    const clone = spawnSync('git', ['clone', repoDetails.clone_url, randPath]);
+    
     var repoName = repoDetails.name;
-    // Install pycodestyle and change directory to uploads folder
-    //cmd.run('pip install pycodestyle');
-    //cmd.run('cd python');
+
         // Run pycodestyle on the python files and save it to <repoName>.txt 
         // (first displays errors and solutions, second displays number of each errors)
         // pycodestyle --show-source --show-pep8 <folder> > uploads/test.txt (1)
@@ -92,19 +65,19 @@ var checkPythonFormatting = async function(repoDetails){
     
     //cmd.run('pycodestyle --show-source --show-pep8 python > ./uploads/' + repoName + '1.txt');
 
-    var resultFilename = path.join('uploads', repoName + '2.txt');
-    var temp = await cmd.run('pycodestyle --statistics -qq  python > ' + resultFilename);
+    var resultFilename = path.join('uploads', randString + '2.txt');
+    var temp = await cmd.run('pycodestyle --statistics -qq ./' + randPath + ' > ' + resultFilename);
+    
     
     // Call function to turn error text files to json to send back to front-end
     var result = await textToJSONPython(repoName, resultFilename, '.py'); // Send score
+    const rmdir = spawnSync('rm', ['-r', randPath]);
     return result;
 }
 
 // Gets all GitHub repos under a given username
     // Calls checkPythonFormatting and getAllRepos & called by express route
 var getAllRepos = async function(username) {
-    //request({ url: 'https://api.github.com/users/' + username + '/repos', headers: githubHeaders }, function(error, response, body) {
-	//https://api.github.com/search/repositories?q=+user:daniel-e+language:python&sort=stars&order=desc	
       return new Promise(function (resolve, reject) {
           request({ url: 'https://api.github.com/search/repositories?q=+user:' + username + '+language:python&sort=stars&order=desc', headers: githubHeaders }, function(error, response, body) {
             if (!error && response.statusCode == 200) {
@@ -204,7 +177,7 @@ app.get('/', function (req, res) {
 //app.post('/sendurl', function (req, res) {
 app.post('/:userName', async function (req, res) {
     // Delete files in uploads folder
-    deleteAllFilesInUploads();
+    //deleteAllFilesInUploads();
     var userName = req.params.userName
     var url = 'https://github.com/' + userName;
     // Download files from github repos to uploads folder

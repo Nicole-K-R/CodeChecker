@@ -148,7 +148,7 @@ $(function(){
               
               
               var repo = scores.repos[i];
-              scoreshtml += '<div class="col-lg-6 mb-6"><div class="card h-100"><h4 class="card-header"><font size="+2"><b>' + repo.name + '</b></font></h4><div class="card-body">' +
+              scoreshtml += '<div class="col-lg-12 mb-6" style="margin-top: 15px;"><div class="card h-100"><h4 class="card-header"><font size="+2"><b>' + repo.name + '</b></font></h4><div class="card-body">' +
                 '<span class="outer-bar"><span class="inner-bar" style="width: ' + repo.score + '%;"></span><span class="bar-text">' + repo.score + '%</span></span>' + 
                 '<canvas id="myChart' + i + '"></canvas></div><div class="card-footer"><a href="#" class="btn btn-primary">Learn More</a></div></div></div>';
  
